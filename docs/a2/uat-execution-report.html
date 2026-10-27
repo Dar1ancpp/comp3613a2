@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Student Awards User Acceptance Test Report</title>
+<style>
+@page { size: A4 landscape; margin: 12mm; }
+* { box-sizing: border-box; }
+body { margin: 24px auto; padding: 0 20px; max-width: 1320px; color: #111; background: white; font: 14px/1.4 Arial, Helvetica, sans-serif; }
+h1 { margin: 0 0 16px; font-size: 25px; font-weight: 500; }
+h2 { font-size: 17px; margin: 20px 0 8px; }
+p { margin: 7px 0; }
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+th, td { border: 1px solid #111; padding: 7px; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+th { font-weight: 700; }
+.tester { max-width: 850px; margin: 14px 0; }
+.tester td { height: 40px; }
+.metadata, .note { font-size: 12px; }
+.setup { margin: 16px 0 22px; font-size: 12px; }
+ul { margin: 6px 0; padding-left: 20px; }
+.case { margin: 20px 0; break-inside: avoid-page; page-break-inside: avoid; }
+.case-table, .record-table { font-size: 12px; }
+ol { padding-left: 16px; margin: 0; }
+ol li { margin-bottom: 5px; }
+.success { vertical-align: middle; }
+.success-table { font-size: 11px; }
+.success-table td { padding: 6px 3px; text-align: center; height: 30px; }
+.tickbox { display: inline-block; width: 13px; height: 13px; border: 1px solid #555; }
+.record-table { margin-top: -1px; }
+.blank { min-height: 46px; white-space: pre-wrap; }
+[data-field="execution-date"], [data-field="evidence-reference"] { min-height: 18px; }
+hr { border: 0; border-top: 1px solid #aaa; margin: 5px 0; }
+code { font: 0.95em Consolas, monospace; }
+a { color: #111; }
+.acceptance { break-inside: avoid-page; margin-top: 24px; }
+.acceptance td { height: 105px; }
+.acceptance .blank { min-height: 80px; }
+@media print {
+body { margin: 0; padding: 0; max-width: none; font-size: 10pt; }
+h1 { font-size: 19pt; } h2 { font-size: 12pt; }
+.case-table, .record-table, .setup, .note, .metadata { font-size: 9pt; }
+th, td { padding: 5px; } a { text-decoration: none; }
+}
+</style>
+</head>
+<body>
+<header>
+<h1>Student Awards User Acceptance Test Report</h1>
+<p class="metadata"><strong>COMP3613 Assignment 2</strong> | Prepared for manual execution | <strong>Application:</strong> A2 Student Awards</p>
+<table class="tester" aria-label="Tester information">
+<tr><th>Tester Name</th><th>Tester Position</th><th>Date of Test (DD/MM/YYYY)</th></tr>
+<tr><td><div class="blank" data-field="tester-name"></div></td><td><div class="blank" data-field="tester-position"></div></td><td><div class="blank" data-field="test-date"></div></td></tr>
+</table>
+<p class="metadata"><strong>Website:</strong> http://127.0.0.1:5000 | <strong>Database:</strong> comp3613a2/a2_development.db</p>
+<table class="record-table" aria-label="Run identification">
+<tr><th>Run Label (R)</th><th>Browser / Version</th><th>Application Version / Commit</th></tr>
+<tr><td><div class="blank" data-field="run-label"></div></td><td><div class="blank" data-field="browser-version"></div></td><td><div class="blank" data-field="application-version"></div></td></tr>
+</table>
+</header>
+<section class="setup">
+<h2>Pre-conditions and Test Data</h2>
+<p>Cover the three student workflows: Submit Volunteer Hours, Track Progress and Milestones, and Redeem Awards; their supporting administrator functions; and relevant access controls. Testing is manual through the existing browser interface. API testing, automated testing, database manipulation and deployment are outside this plan.</p><p>At execution time, use only <code>http://127.0.0.1:5000</code> with the A2 development database <code>comp3613a2/a2_development.db</code>. Do not use the test database or Assignment 1 deployment. The application and seeded administrator account must be available. Do not initialize, reset or clear a database as part of UAT.</p><p>Choose a unique run label R (for example, <code>UAT20261026a</code>). Student A, B and C mean new accounts named <code>R_a</code>, <code>R_b</code> and <code>R_c</code>, with unique valid email addresses and privately held passwords. Create A in 1.1; create B/C through Register when preparing 3.2. Do not write passwords in this plan or screenshots. Use separate browser profiles/private windows for student and administrator sessions, or sign out before switching users.</p><p>Execute cases in numerical order and sign in/out as needed to establish each stated actor/session precondition. Later data preconditions depend on the stated earlier outcomes; if those outcomes are unmet, leave Success blank and record the blockage in General Comments. Use only run-labelled records. For every activity use organization <code>Campus Volunteers</code>, a valid past date, and supporting information <code>UAT activity for R</code>, unless the case deliberately varies a field. Refresh the relevant page after another user changes data.</p><p>Seeded milestones should be Bronze 10 hours, Silver 25 hours and Gold 50 hours. Confirm these thresholds before execution; if different, record the discrepancy before proceeding. Drawings contain illustrative data: the controlled values below determine expected results. Approved hours are cumulative eligibility, not a balance spent on Awards. Requests do not reserve stock; approval reduces it. Repeat requests are allowed once the earlier request is no longer pending.</p>
+<p>Use two independent cookie stores, such as a normal window for the student and a private window for the administrator; two private windows in the same browser may share a session.</p>
+<h2>Wireframe References</h2><ul><li><strong>W1:</strong> <a href="../wireframes/log-volunteer-hours.png">Log Volunteer Hours</a> - cases 2.1-2.3.</li><li><strong>W2:</strong> <a href="../wireframes/progress-and-milestones.png">Progress and Milestones</a> - cases 3.1-3.2.</li><li><strong>W3:</strong> <a href="../wireframes/redeem-rewards.png">Redeem Rewards</a> - cases 5.1-5.2 and student-side checks in 6.1-6.3.</li><li><strong>W4:</strong> <a href="../wireframes/admin-approvals.png">Administrator Approvals</a> - cases 2.3 and 6.1-6.3.</li><li><strong>W5:</strong> <a href="../wireframes/add-prize.png">Add Prize</a> - cases 4.1-4.3.</li></ul>
+<p>Test Case IDs, Pre-conditions, Test Steps and Test Criteria are copied from the finalized <a href="uat-plan.md">17-case UAT plan</a>. Record observations only after manual execution and tester confirmation. Leave unexecuted or blocked cases unticked; record blockages in Comments. Evidence references are optional unless needed to explain an issue. Do not include credentials or tokens.</p>
+</section>
+
+<section class="case" id="case-1-1" data-case-id="1.1">
+<table class="case-table" aria-label="Test Case 1.1">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>1.1 Test Registration and Role-specific Login</strong></td>
+<td data-source="pre">A's username/email are unused; the local administrator exists; both browser profiles are signed out.</td>
+<td data-source="steps"><ol><li>Register A with valid details and observe the Sign in page.</li><li>Sign in as A and inspect Student navigation.</li><li>In the separate administrator profile, sign in and open Approvals and Awards.</li></ol></td>
+<td data-source="criteria">Registration redirects to <code>/login</code> with <code>Registration completed! Sign in now!</code>, without automatically signing A in. A's login opens <code>/app</code>, showing A's username, Progress, Log hours, Awards and Sign out, without administrator navigation. Administrator login opens <code>/admin</code>, showing the correct identity and working Approvals, Awards and Sign out navigation.</td>
+<td class="success"><table class="success-table" aria-label="Success for 1.1"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 1.1">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-1-2" data-case-id="1.2">
+<table class="case-table" aria-label="Test Case 1.2">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>1.2 Test Invalid Login</strong></td>
+<td data-source="pre">Tester is signed out; A exists.</td>
+<td data-source="steps"><ol><li>Attempt to sign in as A with an incorrect password.</li><li>Attempt a nonexistent username with a nonempty password.</li></ol></td>
+<td data-source="criteria">Each attempt shows incorrect-credentials feedback and leaves the tester at Sign in; no authenticated dashboard is accessible.</td>
+<td class="success"><table class="success-table" aria-label="Success for 1.2"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 1.2">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-1-3" data-case-id="1.3">
+<table class="case-table" aria-label="Test Case 1.3">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>1.3 Test Logout and Unauthenticated Access</strong></td>
+<td data-source="pre">A is signed in.</td>
+<td data-source="steps"><ol><li>Click Sign out.</li><li>Directly open <code>/app/hours</code>, <code>/app/progress</code>, <code>/app/awards</code>, <code>/admin/approvals</code> and <code>/admin/awards</code> using the address bar.</li><li>Sign in again when finished.</li></ol></td>
+<td data-source="criteria">Logout returns to Sign in; protected content/actions are unavailable while signed out, with an access/session message or sign-in prompt. No new records are created. HTTP status-code assertions belong to later API tests.</td>
+<td class="success"><table class="success-table" aria-label="Success for 1.3"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 1.3">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-1-4" data-case-id="1.4">
+<table class="case-table" aria-label="Test Case 1.4">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>1.4 Test Student Restrictions</strong></td>
+<td data-source="pre">A is signed in as a student.</td>
+<td data-source="steps"><ol><li>Inspect A's navigation.</li><li>Directly open <code>/admin</code>, <code>/admin/approvals</code> and <code>/admin/awards</code>.</li></ol></td>
+<td data-source="criteria">Administrator navigation is absent; direct access is denied without displaying review, processing or Award-management controls or other students' private submission details.</td>
+<td class="success"><table class="success-table" aria-label="Success for 1.4"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 1.4">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-2-1" data-case-id="2.1">
+<table class="case-table" aria-label="Test Case 2.1">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>2.1 Test Valid Whole and Fractional Hour Submissions</strong></td>
+<td data-source="pre">A is signed in with zero submissions and verified hours.</td>
+<td data-source="steps"><ol><li>Open Log hours; submit <code>R Beach Cleanup</code>, 4 hours, with the common activity details.</li><li>Submit <code>R Peer Tutoring</code>, 4.5 hours.</li><li>Refresh the page; open Progress.</li></ol></td>
+<td data-source="criteria">Each submission has success feedback and exactly one My submissions row with correct activity, organization, date, hours and Pending status. Values display as <code>4</code> and <code>4.5</code>. Both persist after refresh; verified hours remain zero while pending.</td>
+<td class="success"><table class="success-table" aria-label="Success for 2.1"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 2.1">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-2-2" data-case-id="2.2">
+<table class="case-table" aria-label="Test Case 2.2">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>2.2 Test Invalid Hour Submission</strong></td>
+<td data-source="pre">A is signed in; note the existing submission count.</td>
+<td data-source="steps"><ol><li>Attempt to submit while omitting each required field in turn: activity, organization, hours and date; restore other fields between attempts.</li><li>With other fields valid, try hours <code>0</code>, then <code>-1</code>.</li><li>Refresh My submissions.</li></ol></td>
+<td data-source="criteria">Every invalid attempt is blocked with browser validation or application feedback. No additional history row appears; existing records are unchanged. Supporting information is optional and is not a required-field failure.</td>
+<td class="success"><table class="success-table" aria-label="Success for 2.2"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 2.2">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-2-3" data-case-id="2.3">
+<table class="case-table" aria-label="Test Case 2.3">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>2.3 Test Administrator Approval and Rejection of Hours</strong></td>
+<td data-source="pre">Both 2.1 submissions remain Pending; administrator is signed in separately.</td>
+<td data-source="steps"><ol><li>In Approvals, View details for A's <code>R Beach Cleanup</code>; check the submitted information and Approve.</li><li>Refresh A's history/Progress.</li><li>View and Reject A's <code>R Peer Tutoring</code>; refresh both actor views.</li></ol></td>
+<td data-source="criteria">Review details match student, activity, organization, date, hours and supporting information. Each decision shows feedback and removes its row from the pending queue. A sees Approved for 4 hours and Rejected for 4.5 hours. Verified hours become 4 after approval and stay 4 after rejection; the pending/rejected 4.5 hours never contribute. Reviewed rows have no further review actions.</td>
+<td class="success"><table class="success-table" aria-label="Success for 2.3"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 2.3">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-3-1" data-case-id="3.1">
+<table class="case-table" aria-label="Test Case 3.1">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>3.1 Test Milestone Threshold and Approved-only Progress</strong></td>
+<td data-source="pre">A has 4 approved hours after 2.3; milestones match the preparation values.</td>
+<td data-source="steps"><ol><li>As A, submit <code>R Library Service</code> for 5.75 hours. Check Progress while pending, then have the administrator approve it and refresh.</li><li>Submit <code>R Event Support</code> for 0.25 hours; approve it and refresh Progress again.</li></ol></td>
+<td data-source="criteria">Pending hours do not affect progress. The first approval produces 9.75 verified hours with Bronze incomplete at <code>9.75 / 10</code>; the second produces exactly 10 and Bronze Complete. Silver and Gold remain incomplete at <code>10 / 25</code> and <code>10 / 50</code>; progress bars reflect those totals and never exceed their displayed bounds. Rejected hours remain excluded.</td>
+<td class="success"><table class="success-table" aria-label="Success for 3.1"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 3.1">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-3-2" data-case-id="3.2">
+<table class="case-table" aria-label="Test Case 3.2">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>3.2 Test Leaderboard Ordering and Tied Ranks</strong></td>
+<td data-source="pre">A has 10 approved hours. Register fresh B/C through the UI. As B submit one run-labelled 10-hour activity; as C submit one 4.5-hour activity; have the administrator approve both.</td>
+<td data-source="steps"><ol><li>Open Progress as A, B and C.</li><li>Compare verified totals, order and rank across the full leaderboard, including any existing students.</li></ol></td>
+<td data-source="criteria">A/B each show 10 hours and share a rank; C shows 4.5 and ranks below them. Rows sort by decreasing approved-hour totals, then ascending username for ties. Dense rank starts at 1 and equals one plus the number of distinct higher totals, without gaps after ties. Students with no approved hours appear with 0; administrators are excluded. The current user is identified as You. Absolute ranks account for all existing students rather than assuming A/B are first.</td>
+<td class="success"><table class="success-table" aria-label="Success for 3.2"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 3.2">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-4-1" data-case-id="4.1">
+<table class="case-table" aria-label="Test Case 4.1">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>4.1 Test Add Awards</strong></td>
+<td data-source="pre">Administrator is signed in; these run-labelled Award names are unused.</td>
+<td data-source="steps"><ol><li>Open Awards, click Add Award and create <code>R Voucher</code>: description <code>Campus cafe voucher</code>, required hours 10, quantity 2, Active selected.</li><li>Similarly create <code>R Hoodie</code>: 25 hours, quantity 2, active; and <code>R Empty</code>: 10 hours, quantity 0, active.</li><li>Refresh the catalogue and view Awards as A.</li></ol></td>
+<td data-source="criteria">Each creation shows feedback and one persistent catalogue row with the specified values. All three active Awards appear in A's catalogue; zero inventory is accepted as a valid quantity.</td>
+<td class="success"><table class="success-table" aria-label="Success for 4.1"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 4.1">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-4-2" data-case-id="4.2">
+<table class="case-table" aria-label="Test Case 4.2">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>4.2 Test Award Validation and Duplicate Names</strong></td>
+<td data-source="pre">4.1 is complete; note catalogue values and count.</td>
+<td data-source="steps"><ol><li>In Add Award, try a blank name, required hours 0, and quantity -1 in separate otherwise-valid attempts.</li><li>Try creating another Award named <code>R Voucher</code>.</li><li>In Edit for <code>R Voucher</code>, attempt required hours 0, then cancel/reopen and attempt quantity -1.</li><li>Refresh the catalogue.</li></ol></td>
+<td data-source="criteria">Each attempt is prevented with validation or duplicate-name feedback; no extra Award is created and existing Award values remain unchanged.</td>
+<td class="success"><table class="success-table" aria-label="Success for 4.2"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 4.2">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-4-3" data-case-id="4.3">
+<table class="case-table" aria-label="Test Case 4.3">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>4.3 Test Award Editing, Stock and Availability</strong></td>
+<td data-source="pre"><code>R Voucher</code> is active, quantity 2, with no requests; A has 10 approved hours.</td>
+<td data-source="steps"><ol><li>Open Edit and check prefilled values. Save name <code>R Campus Voucher</code>, description <code>Updated campus voucher</code>, threshold 25 and quantity 3.</li><li>Refresh A's catalogue.</li><li>Set threshold back to 10 and clear Active; save and refresh A's catalogue.</li><li>Restore Active, save and refresh again.</li></ol></td>
+<td data-source="criteria">Edited values persist in management and student views; at threshold 25 A sees Locked. Deactivation shows Inactive to the administrator and hides the Award from A. Reactivation restores the same renamed Award with threshold 10, quantity 3 and Redeem available to A. Subsequent cases use <code>R Campus Voucher</code>.</td>
+<td class="success"><table class="success-table" aria-label="Success for 4.3"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 4.3">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-5-1" data-case-id="5.1">
+<table class="case-table" aria-label="Test Case 5.1">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>5.1 Test Eligibility, Confirmation and Duplicate Prevention</strong></td>
+<td data-source="pre">3.2 and 4.3 are complete; A/B have 10 verified hours, C has 4.5; voucher quantity is 3 and A has no requests.</td>
+<td data-source="steps"><ol><li>Compare voucher/hoodie actions as A and C.</li><li>As A, Redeem the voucher, inspect its modal and Cancel; inspect history.</li><li>Reopen and Confirm request, then refresh.</li><li>Navigate away/back and attempt another request if offered.</li></ol></td>
+<td data-source="criteria">A can redeem the 10-hour voucher but not the 25-hour hoodie; C sees both Locked. Cancel adds nothing. Confirm shows success and one Pending voucher history row with requested date. The action becomes Pending rather than Redeem, preventing a second pending request through the UI. Stock remains 3 and A's verified hours remain 10. Direct-request enforcement is covered separately by integration/API testing.</td>
+<td class="success"><table class="success-table" aria-label="Success for 5.1"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 5.1">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-5-2" data-case-id="5.2">
+<table class="case-table" aria-label="Test Case 5.2">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>5.2 Test Student History Separation</strong></td>
+<td data-source="pre">A's voucher request remains Pending; B has no redemptions and has 10 verified hours.</td>
+<td data-source="steps"><ol><li>As B, inspect Log hours and Awards histories.</li><li>Request <code>R Campus Voucher</code> as B.</li><li>Refresh both A's and B's histories in their separate sessions.</li></ol></td>
+<td data-source="criteria">B sees B's activity and request, not A's activities or request; A sees only A's private histories. Each has one own pending voucher request. The public leaderboard remains shared; stock remains 3 because neither request is approved.</td>
+<td class="success"><table class="success-table" aria-label="Success for 5.2"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 5.2">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-6-1" data-case-id="6.1">
+<table class="case-table" aria-label="Test Case 6.1">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>6.1 Test Redemption Approval and Fulfillment</strong></td>
+<td data-source="pre">A/B have separate pending voucher requests after 5.1/5.2; quantity is 3.</td>
+<td data-source="steps"><ol><li>As administrator, identify A's voucher request by student name and Approve.</li><li>Refresh A's history, Approvals and stock.</li><li>Mark A's approved request as fulfilled; refresh again.</li></ol></td>
+<td data-source="criteria">Approval shows feedback, A sees Approved and stock decreases exactly once to 2; B's request stays Pending. A's approved row offers Mark as fulfilled. Fulfillment shows Fulfilled in A's history, removes A's row from the actionable queue and offers no further processing. Stock stays 2 and A retains 10 verified hours.</td>
+<td class="success"><table class="success-table" aria-label="Success for 6.1"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 6.1">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-6-2" data-case-id="6.2">
+<table class="case-table" aria-label="Test Case 6.2">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>6.2 Test Repeat Request and Administrator Rejection</strong></td>
+<td data-source="pre">A's first voucher request is Fulfilled; quantity remains 2.</td>
+<td data-source="steps"><ol><li>As A, request the voucher again and confirm.</li><li>As administrator, Reject A's new pending request.</li><li>Refresh A's history and the administrator queue/catalogue.</li></ol></td>
+<td data-source="criteria">A can create a new pending request after fulfillment. Rejection changes only the new request to Rejected, preserves the earlier Fulfilled row, removes the rejected request from the actionable queue, and leaves quantity 2. A can again see Redeem after rejection; verified hours remain 10.</td>
+<td class="success"><table class="success-table" aria-label="Success for 6.2"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 6.2">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="case" id="case-6-3" data-case-id="6.3">
+<table class="case-table" aria-label="Test Case 6.3">
+<colgroup><col style="width:10%"><col style="width:18%"><col style="width:25%"><col style="width:36%"><col style="width:11%"></colgroup>
+<thead><tr><th>Test Case</th><th>Pre-conditions</th><th>Test Steps</th><th>Test Criteria</th><th>Success (indicate with a &#10003;)</th></tr></thead>
+<tbody><tr>
+<td><strong>6.3 Test Out-of-stock Redemption Processing</strong></td>
+<td data-source="pre"><code>R Empty</code> is active with threshold 10 and was created with quantity 0 in 4.1; A has 10 verified hours and no request for it. The administrator can edit its stock.</td>
+<td data-source="steps"><ol><li>As administrator, Edit <code>R Empty</code>, set quantity to 1 and Save changes.</li><li>As A, refresh Awards, confirm quantity 1, request <code>R Empty</code> and confirm.</li><li>As administrator, verify A's request is Pending, then Edit the Award, reduce quantity to 0 and save.</li><li>Return to Approvals, locate A's pending request and click Approve.</li><li>Refresh A's history, Approvals and Award stock.</li></ol></td>
+<td data-source="criteria">A's request is created as Pending while quantity is 1; requesting does not reserve or reduce stock. After the administrator reduces quantity to 0, attempting approval rejects the pending request with out-of-stock feedback. A sees Rejected, inventory remains exactly 0 and the request leaves the actionable queue. Inventory never becomes negative.</td>
+<td class="success"><table class="success-table" aria-label="Success for 6.3"><tr><td>Pass</td><td>Fail</td></tr><tr><td data-field="pass"><span class="tickbox"></span></td><td data-field="fail"><span class="tickbox"></span></td></tr></table></td>
+</tr></tbody></table>
+<table class="record-table" aria-label="Execution record for 6.3">
+<colgroup><col style="width:38%"><col style="width:37%"><col style="width:25%"></colgroup>
+<tr><th>Actual Results</th><th>Comments</th><th>Date of Test (DD/MM/YYYY) / Evidence Reference</th></tr>
+<tr><td><div class="blank" data-field="actual-results"></div></td><td><div class="blank" data-field="comments"></div></td><td><div class="blank" data-field="execution-date"></div><hr><div class="blank" data-field="evidence-reference"></div></td></tr>
+</table></section>
+
+<section class="acceptance">
+<p class="note">Complete the overall decision and signature only after all 17 cases have been executed and reviewed, including any necessary retesting.</p>
+<table aria-label="Final acceptance">
+<colgroup><col style="width:45%"><col style="width:27%"><col style="width:28%"></colgroup>
+<tr><th>General Comments</th><th>Accepted | Rejected</th><th>Signature</th></tr>
+<tr><td><div class="blank" data-field="general-comments"></div></td><td><div class="blank" data-field="acceptance-decision"></div></td><td><div class="blank" data-field="signature"></div></td></tr>
+</table></section>
+</body></html>

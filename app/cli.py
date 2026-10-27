@@ -52,6 +52,10 @@ def cmd_seed(args: argparse.Namespace) -> None:
     bob / bobpass       (regular_user)
     admin / adminpass   (admin)
     """
+    from app.config import get_settings
+
+    if get_settings().env == "postman":
+        raise SystemExit("Use python -B -m app.postman init for private Postman fixtures")
     from app.database import ensure_db_and_tables, get_cli_session
     from app.repositories.user import UserRepository
     from app.schemas.user import AdminCreate, RegularUserCreate
@@ -142,8 +146,12 @@ def cmd_run(args: argparse.Namespace) -> None:
     settings = get_settings()
     bind_host = args.host or settings.app_host
     bind_port = args.port or settings.app_port
+    if settings.env == "postman" and (
+        bind_host != "127.0.0.1" or bind_port != 5001 or args.reload
+    ):
+        raise SystemExit("Postman requires 127.0.0.1:5001 without reload")
     if args.reload is None:
-        use_reload = settings.env.lower() != "production"
+        use_reload = settings.env.lower() not in {"production", "postman"}
     else:
         use_reload = args.reload
     print(f"Starting FastStarter on http://{bind_host}:{bind_port} (reload={use_reload})")
@@ -152,6 +160,7 @@ def cmd_run(args: argparse.Namespace) -> None:
         host=bind_host,
         port=bind_port,
         reload=use_reload,
+        **({"access_log": False} if settings.env == "postman" else {}),
     )
 
 

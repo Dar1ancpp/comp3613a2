@@ -1,11 +1,13 @@
 import logging
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, nullcontext
 
 import uvicorn
 from fastapi import FastAPI, Request, status
+from fastapi.exception_handlers import request_validation_exception_handler
+from fastapi.exceptions import RequestValidationError
 from starlette.middleware import Middleware
 from starlette.middleware.sessions import SessionMiddleware
-from starlette.responses import RedirectResponse
+from starlette.responses import JSONResponse, RedirectResponse
 
 from app.config import get_settings
 from app.routers import api_router, router, static_files, templates
@@ -17,9 +19,15 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     from app.database import ensure_db_and_tables
 
-    # First boot on Render often races the free Postgres instance.
-    ensure_db_and_tables()
-    yield
+    lock = nullcontext()
+    if get_settings().env == "postman":
+        from app.postman import database_lock
+
+        lock = database_lock()
+    with lock:
+        # First boot on Render often races the free Postgres instance.
+        ensure_db_and_tables()
+        yield
 
 
 app = FastAPI(
@@ -61,10 +69,34 @@ async def health():
 
 @app.exception_handler(status.HTTP_401_UNAUTHORIZED)
 async def unauthorized_redirect_handler(request: Request, exc: Exception):
+    if request.url.path.startswith("/api/"):
+        return JSONResponse(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            content={"detail": getattr(exc, "detail", "Not authenticated")},
+            headers=getattr(exc, "headers", None),
+        )
     return templates.TemplateResponse(
         request=request,
         name="401.html",
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        headers=getattr(exc, "headers", None),
     )
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_error_handler(request: Request, exc: RequestValidationError):
+    if request.url.path.startswith("/api/"):
+        # FastAPI's default input/context fields can echo submitted credentials.
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            content={
+                "detail": [
+                    {key: error[key] for key in ("type", "loc", "msg")}
+                    for error in exc.errors()
+                ]
+            },
+        )
+    return await request_validation_exception_handler(request, exc)
 
 
 if __name__ == "__main__":
@@ -72,5 +104,5 @@ if __name__ == "__main__":
         "app.main:app",
         host=get_settings().app_host,
         port=get_settings().app_port,
-        reload=get_settings().env.lower() != "production",
+        reload=get_settings().env.lower() not in {"production", "postman"},
     )

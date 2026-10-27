@@ -129,6 +129,9 @@ celerybeat.pid
 
 # Environments
 .env
+.env.*
+!.env.example
+!.env.*.example
 .envrc
 .venv
 env/
@@ -200,6 +203,20 @@ marimo/_lsp/
 __marimo__/
 
 database.db
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+.a2_postman.lock
+.a2_integration.lock
+# Private Postman environments and raw run reports can contain credentials/cookies.
+postman/*.local.postman_environment.json
+postman/.cache/
+postman/results/
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
 docs/report.pdf
 docs/transcripts/
 docs/transcripts.zip

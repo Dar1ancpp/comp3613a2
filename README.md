@@ -80,14 +80,70 @@ Copy-Item .env.example .env
 cp .env.example .env
 ```
 
-Defaults use a local SQLite file (`database.db`). Change `SECRET_KEY` before any real deployment. Set `CONFIG_PASSWORD` to enable the ops console at `/config` (leave empty to keep it disabled). If `.env` is missing, the app falls back to `.env.example` automatically.
+This Assignment 2 copy uses **`a2_development.db` in this repository root**.
+The ignored `.env` holds local secrets; `.env.example` contains safe example
+values only. If `.env` is missing, the app uses that development example.
+Use a fresh random `SECRET_KEY` in a new clone's `.env`. `CONFIG_PASSWORD` is
+empty so the operational console at `/config` stays disabled.
+
+Development and test profiles reject remote database URLs and each other's
+database files before an engine is constructed. Relative SQLite paths are
+resolved against this repository, not the terminal's working directory.
+Environment variables take precedence over dotenv values; remove inherited
+`DATABASE_URI` overrides rather than changing `ENV` to bypass the guard.
+Explicit production configuration still supports PostgreSQL; neither local
+profile selects it. No Assignment 1 database or deployment is needed locally.
+
+#### Assignment 2 test profile (for future pytest suites)
+
+The ignored `.env.test` uses **`a2_test.db` in this repository root**, a separate
+secret, and `ENV=test`. `.env.test.example` is the safe template for new clones.
+Copy it to `.env.test` and replace its example secret when setting up another
+machine. Neither test file falls back to the development `.env`.
+
+Select the profile **before any application import**, in a fresh process:
+
+```powershell
+# Future use, after the test suites have been implemented:
+$previousA2Env = $env:ENV
+try {
+    $env:ENV = "test"
+    python -m pytest
+} finally {
+    if ($null -eq $previousA2Env) {
+        Remove-Item Env:ENV -ErrorAction SilentlyContinue
+    } else {
+        $env:ENV = $previousA2Env
+    }
+}
+```
+
+For a future pytest `conftest.py`, select `ENV=test` before importing `app.main`
+or `app.database`. Session fixtures, lifespan startup, CLI sessions, and schema
+recovery must all use that test engine. Fixtures will also need repeatable test
+data setup/cleanup; no test fixtures or test cases are implemented yet. Ordinary
+`pytest` does not automatically load `.env.test`; explicit selection is required.
+Do not switch profiles after importing an engine into a running process.
+
+SQLite engine configuration permits FastAPI's thread usage and enables foreign
+keys on every future connection. The current models and queries use constructs
+supported by SQLite. SQLite does not reproduce PostgreSQL's decimal storage or
+concurrency semantics exactly; any later PostgreSQL-specific tests need a
+separately authorized disposable database.
+
+Both databases and SQLite journal/WAL files are ignored by Git. Configuration
+inspection and engine construction do not create database files. Application
+startup creates missing tables; initialization also seeds demo data. To initialize
+locally without dropping existing tables, use `python manage.py init --no-drop`.
+Use the normal development profile (`ENV` unset or `development`) for that command.
+No database initialization is needed just to inspect configuration.
 
 ### 4. Initialise the database (Python CLI)
 
-Creates tables (drops existing by default) **and seeds demo users**:
+For A2, create missing tables and seed demo data **without dropping existing tables**:
 
 ```bash
-python manage.py init
+python manage.py init --no-drop
 ```
 
 | Username | Password    | Role         |

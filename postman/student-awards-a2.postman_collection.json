@@ -1,0 +1,1478 @@
+{
+  "info": {
+    "_postman_id": "f5f486b1-7fb3-4d96-81cc-16f079e6b72c",
+    "name": "COMP3613 A2 - Student Awards API",
+    "description": "25 ordered requests covering every implemented JSON API operation using only the guarded ENV=postman server. Begin with freshly initialized/reset Postman fixtures and run the entire collection once. Credentials are private environment values; cookies are transient run-local variables, never collection variables. See postman/README.md.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "noauth"
+  },
+  "protocolProfileBehavior": {
+    "disableCookies": true,
+    "followRedirects": false
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const stop = (reason) => {",
+          "    // Changing the URL first is a fail-closed fallback for older runtimes.",
+          "    pm.request.url.update(\"http://127.0.0.1:1/__blocked_by_a2_guard\");",
+          "    if (pm.execution && pm.execution.setNextRequest) pm.execution.setNextRequest(null);",
+          "    pm.test(\"Local-only safety guard\", () => { throw new Error(reason); });",
+          "    if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+          "    throw new Error(reason);",
+          "};",
+          "const base = pm.environment.get(\"base_url\");",
+          "const resolved = pm.variables.replaceIn(pm.request.url.toString());",
+          "if (base !== \"http://127.0.0.1:5001\" ||",
+          "    pm.environment.get(\"profile\") !== \"postman\" ||",
+          "    !/^http:\\/\\/127\\.0\\.0\\.1:5001\\/api\\/[a-z0-9/?=&_-]+$/.test(resolved)) {",
+          "    stop(\"Only the isolated ENV=postman server at http://127.0.0.1:5001 is allowed.\");",
+          "}",
+          "const match = /^(\\d+) \\[(login-student|login-admin|student|admin|anonymous)\\]/.exec(pm.info.requestName);",
+          "if (!match) stop(\"Request has no explicit authentication role.\");",
+          "const role = match[2];",
+          "if (match[1] === \"01\") {",
+          "    // Start each complete Runner execution without stale IDs or private sessions.",
+          "    [\"student_cookie\", \"admin_cookie\"].forEach(key => pm.variables.set(key, \"\"));",
+          "    [\"student_id\", \"admin_id\", \"submission_id\", \"award_id\", \"redemption_id\",",
+          "     \"rejected_redemption_id\", \"inventory_before\", \"inventory_after_approval\"].forEach(",
+          "         key => pm.collectionVariables.unset(key));",
+          "    pm.collectionVariables.set(\"award_name\", \"A2 Runner \" + pm.variables.replaceIn(\"{{$guid}}\"));",
+          "}",
+          "pm.request.headers.remove(\"Authorization\");",
+          "pm.request.headers.remove(\"Cookie\");",
+          "if (role === \"student\" || role === \"admin\") {",
+          "    const token = pm.variables.get(role + \"_cookie\");",
+          "    if (!token) stop(\"Run the complete collection from its first request to establish the role session.\");",
+          "    pm.request.headers.upsert({key: \"Cookie\", value: \"access_token=\" + token});",
+          "}",
+          "if (role.startsWith(\"login-\")) {",
+          "    const prefix = role.slice(6);",
+          "    const username = pm.environment.get(prefix + \"_username\");",
+          "    const password = pm.environment.get(prefix + \"_password\");",
+          "    if (!username || !password) stop(\"Set both private local credentials for the login role.\");",
+          "    // JSON.stringify also handles quotes in privately supplied passwords safely.",
+          "    pm.request.body.update(JSON.stringify({username, password}));",
+          "}"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "if (pm.response.code !== 204) {",
+          "    pm.test(\"Response uses JSON\", () => {",
+          "        pm.expect(pm.response.headers.get(\"Content-Type\")).to.match(/^application\\/json\\b/);",
+          "    });",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "id": "29299429-a08e-57cc-b740-f4b8d26d743e",
+          "name": "01 [login-student] Student login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/auth/login",
+            "description": "Credentials come only from private local environment values. The JWT is retained only in a run-local variable.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{student_username}}\",\n  \"password\": \"{{student_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const user = pm.response.json().user;",
+                  "pm.test(\"Correct public student identity and role\", () => {",
+                  "    pm.expect(user).to.have.all.keys(\"id\", \"username\", \"email\", \"role\");",
+                  "    pm.expect(user.username).to.equal(pm.environment.get(\"student_username\"));",
+                  "    pm.expect(user.role).to.equal(\"regular_user\");",
+                  "    pm.expect(user.id).to.be.a(\"number\");",
+                  "});",
+                  "const cookie = pm.response.headers.all().find(h =>",
+                  "    h.key.toLowerCase() === \"set-cookie\" && /^access_token=/.test(h.value));",
+                  "const token = cookie && /^access_token=([^;]+)/.exec(cookie.value);",
+                  "pm.test(\"JWT arrives only in an HttpOnly authentication cookie\", () => {",
+                  "    pm.expect(Boolean(token && /;\\s*HttpOnly\\b/i.test(cookie.value))).to.equal(true);",
+                  "    pm.expect(pm.response.headers.get(\"Cache-Control\")).to.equal(\"no-store\");",
+                  "});",
+                  "if (user.role !== \"regular_user\" || !token) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Expected role session was not established.\");",
+                  "}",
+                  "pm.variables.set(\"student_cookie\", token[1]);",
+                  "pm.collectionVariables.set(\"student_id\", user.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "0388490d-74b9-5788-aa31-8cd3910a8dc5",
+          "name": "02 [login-admin] Admin login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/auth/login",
+            "description": "Credentials come only from private local environment values. The JWT is retained only in a run-local variable.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{admin_username}}\",\n  \"password\": \"{{admin_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const user = pm.response.json().user;",
+                  "pm.test(\"Correct public admin identity and role\", () => {",
+                  "    pm.expect(user).to.have.all.keys(\"id\", \"username\", \"email\", \"role\");",
+                  "    pm.expect(user.username).to.equal(pm.environment.get(\"admin_username\"));",
+                  "    pm.expect(user.role).to.equal(\"admin\");",
+                  "    pm.expect(user.id).to.be.a(\"number\");",
+                  "});",
+                  "const cookie = pm.response.headers.all().find(h =>",
+                  "    h.key.toLowerCase() === \"set-cookie\" && /^access_token=/.test(h.value));",
+                  "const token = cookie && /^access_token=([^;]+)/.exec(cookie.value);",
+                  "pm.test(\"JWT arrives only in an HttpOnly authentication cookie\", () => {",
+                  "    pm.expect(Boolean(token && /;\\s*HttpOnly\\b/i.test(cookie.value))).to.equal(true);",
+                  "    pm.expect(pm.response.headers.get(\"Cache-Control\")).to.equal(\"no-store\");",
+                  "});",
+                  "if (user.role !== \"admin\" || !token) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Expected role session was not established.\");",
+                  "}",
+                  "pm.variables.set(\"admin_cookie\", token[1]);",
+                  "pm.collectionVariables.set(\"admin_id\", user.id);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Volunteer Hours and Progress",
+      "item": [
+        {
+          "id": "bf733329-4403-55f7-a460-df7d17db773d",
+          "name": "03 [student] Submit ten volunteer hours",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/volunteer-submissions",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activity_name\": \"Postman community service\",\n  \"organization\": \"Campus Volunteers\",\n  \"hours\": 10,\n  \"activity_date\": \"2026-10-20\",\n  \"supporting_information\": \"Isolated collection demonstration\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "if (pm.response.code !== 201) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Owned Pending submission with no review metadata\", () => {",
+                  "    pm.expect(body.student_id).to.equal(Number(pm.collectionVariables.get(\"student_id\")));",
+                  "    pm.expect(body.status).to.equal(\"pending\");",
+                  "    pm.expect(Number(body.hours)).to.equal(10);",
+                  "    pm.expect(body.reviewed_by).to.equal(null);",
+                  "    pm.expect(body.reviewed_at).to.equal(null);",
+                  "});",
+                  "pm.collectionVariables.set(\"submission_id\", body.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "6e3ed1ac-b6a4-56e3-af68-13687d50f524",
+          "name": "04 [admin] Read pending submission queue",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/volunteer-submissions?status=pending",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const rows = pm.response.json();",
+                  "pm.test(\"Created submission persisted in the Pending administrator queue\", () => {",
+                  "    pm.expect(rows).to.be.an(\"array\");",
+                  "    pm.expect(rows.every(row => row.status === \"pending\")).to.equal(true);",
+                  "    const item = rows.find(row => row.id === Number(pm.collectionVariables.get(\"submission_id\")));",
+                  "    pm.expect(Boolean(item)).to.equal(true);",
+                  "    pm.expect(item.student_id).to.equal(Number(pm.collectionVariables.get(\"student_id\")));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "83ffe7e0-11da-522e-ba5d-a22be290a952",
+          "name": "05 [admin] Approve volunteer hours",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/volunteer-submissions/{{submission_id}}",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Approved with authenticated administrator review metadata\", () => {",
+                  "    pm.expect(body.id).to.equal(Number(pm.collectionVariables.get(\"submission_id\")));",
+                  "    pm.expect(body.status).to.equal(\"approved\");",
+                  "    pm.expect(body.reviewed_by).to.equal(Number(pm.collectionVariables.get(\"admin_id\")));",
+                  "    pm.expect(Boolean(body.reviewed_at)).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "646c8fbc-532d-5d81-bedc-ecbd0758fa8e",
+          "name": "06 [student] Read owned submission history",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/volunteer-submissions",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const rows = pm.response.json();",
+                  "pm.test(\"Approved update persisted and every returned submission is owned\", () => {",
+                  "    pm.expect(rows.every(row => row.student_id === Number(pm.collectionVariables.get(\"student_id\")))).to.equal(true);",
+                  "    const item = rows.find(row => row.id === Number(pm.collectionVariables.get(\"submission_id\")));",
+                  "    pm.expect(Boolean(item)).to.equal(true);",
+                  "    pm.expect(item.status).to.equal(\"approved\");",
+                  "    pm.expect(item.reviewed_by).to.equal(Number(pm.collectionVariables.get(\"admin_id\")));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "a90fc490-3cfa-5e5a-9414-418dc0c54afb",
+          "name": "07 [student] Read progress milestones and rankings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/progress",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Ten verified hours and matching milestone completion\", () => {",
+                  "    pm.expect(Number(body.verified_hours)).to.equal(10);",
+                  "    const bronze = body.milestones.find(item => item.name === \"Postman Bronze\");",
+                  "    const silver = body.milestones.find(item => item.name === \"Postman Silver\");",
+                  "    pm.expect(Boolean(bronze && silver)).to.equal(true);",
+                  "    pm.expect(bronze.completed).to.equal(true);",
+                  "    pm.expect(bronze.percentage).to.equal(100);",
+                  "    pm.expect(silver.completed).to.equal(false);",
+                  "    pm.expect(silver.percentage).to.equal(40);",
+                  "});",
+                  "pm.test(\"Current student and seeded peer tie at dense rank one; administrator excluded\", () => {",
+                  "    const current = body.leaderboard.filter(row => row.is_current);",
+                  "    pm.expect(current.length).to.equal(1);",
+                  "    pm.expect(current[0].student_id).to.equal(Number(pm.collectionVariables.get(\"student_id\")));",
+                  "    pm.expect(body.rank).to.equal(1);",
+                  "    const peer = body.leaderboard.find(row => row.username === \"postman_peer\");",
+                  "    pm.expect(Boolean(peer)).to.equal(true);",
+                  "    pm.expect(peer.rank).to.equal(1);",
+                  "    pm.expect(body.leaderboard.some(row => row.student_id === Number(pm.collectionVariables.get(\"admin_id\")))).to.equal(false);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Award Management",
+      "item": [
+        {
+          "id": "6186fcf3-da6c-5c32-b141-8fb9346a4e5b",
+          "name": "08 [admin] Create inactive Award",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/awards",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"  {{award_name}}  \",\n  \"description\": \"  Postman demonstration Award  \",\n  \"required_hours\": 10,\n  \"quantity_available\": 2,\n  \"active\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "if (pm.response.code !== 201) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Award created with normalized details and requested inventory\", () => {",
+                  "    pm.expect(body.name).to.equal(pm.collectionVariables.get(\"award_name\"));",
+                  "    pm.expect(body.description).to.equal(\"Postman demonstration Award\");",
+                  "    pm.expect(body.active).to.equal(false);",
+                  "    pm.expect(Number(body.required_hours)).to.equal(10);",
+                  "    pm.expect(body.quantity_available).to.equal(2);",
+                  "});",
+                  "pm.collectionVariables.set(\"award_id\", body.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "64d6ce27-b016-526a-892f-549e448f1f05",
+          "name": "09 [admin] Replace and activate Award",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/awards/{{award_id}}",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{award_name}}\",\n  \"description\": \"  Updated Postman Award  \",\n  \"required_hours\": 10,\n  \"quantity_available\": 1,\n  \"active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Same Award updated and activated without changing its identity\", () => {",
+                  "    pm.expect(body.id).to.equal(Number(pm.collectionVariables.get(\"award_id\")));",
+                  "    pm.expect(body.name).to.equal(pm.collectionVariables.get(\"award_name\"));",
+                  "    pm.expect(body.description).to.equal(\"Updated Postman Award\");",
+                  "    pm.expect(body.quantity_available).to.equal(1);",
+                  "    pm.expect(body.active).to.equal(true);",
+                  "});",
+                  "pm.collectionVariables.set(\"inventory_before\", body.quantity_available);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "c656358f-925a-50bd-a3d4-bf4844ae9577",
+          "name": "10 [student] Read eligible active Award catalogue",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/awards",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Persisted Award update is visible and eligible at the exact threshold\", () => {",
+                  "    pm.expect(Number(body.verified_hours)).to.equal(10);",
+                  "    pm.expect(body.awards.every(item => item.award.active)).to.equal(true);",
+                  "    const item = body.awards.find(item => item.award.id === Number(pm.collectionVariables.get(\"award_id\")));",
+                  "    pm.expect(Boolean(item)).to.equal(true);",
+                  "    pm.expect(item.award.description).to.equal(\"Updated Postman Award\");",
+                  "    pm.expect(item.award.quantity_available).to.equal(Number(pm.collectionVariables.get(\"inventory_before\")));",
+                  "    pm.expect(item.eligible).to.equal(true);",
+                  "    pm.expect(item.pending).to.equal(false);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Redemption Processing",
+      "item": [
+        {
+          "id": "f47cd4ae-bb00-5bea-93af-ce56f227ff18",
+          "name": "11 [student] Request Award redemption",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/redemptions",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"award_id\": {{award_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "if (pm.response.code !== 201) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Pending request belongs to the authenticated student and created Award\", () => {",
+                  "    pm.expect(body.student_id).to.equal(Number(pm.collectionVariables.get(\"student_id\")));",
+                  "    pm.expect(body.award_id).to.equal(Number(pm.collectionVariables.get(\"award_id\")));",
+                  "    pm.expect(body.status).to.equal(\"pending\");",
+                  "    pm.expect(body.processed_by).to.equal(null);",
+                  "    pm.expect(body.processed_at).to.equal(null);",
+                  "});",
+                  "pm.collectionVariables.set(\"redemption_id\", body.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "b909fc07-e4ca-5611-a276-968375e0f971",
+          "name": "12 [student] Reject duplicate Pending request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/redemptions",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"award_id\": {{award_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));",
+                  "if (pm.response.code !== 409) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "pm.test(\"Duplicate Pending request is rejected with the business error\", () => {",
+                  "    pm.expect(pm.response.json().detail).to.equal(\"You already have a pending request for this Award.\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "622c02b2-674d-5045-b901-74c92d02ef9b",
+          "name": "13 [student] Verify request preserves inventory and hours",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/awards",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Request sets Pending indicator without spending inventory or verified hours\", () => {",
+                  "    const item = body.awards.find(item => item.award.id === Number(pm.collectionVariables.get(\"award_id\")));",
+                  "    pm.expect(Boolean(item)).to.equal(true);",
+                  "    pm.expect(item.pending).to.equal(true);",
+                  "    pm.expect(item.award.quantity_available).to.equal(Number(pm.collectionVariables.get(\"inventory_before\")));",
+                  "    pm.expect(Number(body.verified_hours)).to.equal(10);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "9fea4275-8e6f-5e78-98eb-aec8fc4f7f8b",
+          "name": "14 [admin] Read actionable redemption queue",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/redemptions",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const rows = pm.response.json();",
+                  "pm.test(\"One persisted Pending request exists despite the duplicate attempt\", () => {",
+                  "    pm.expect(rows.every(row => [\"pending\", \"approved\"].includes(row.status))).to.equal(true);",
+                  "    const matching = rows.filter(row => row.award_id === Number(pm.collectionVariables.get(\"award_id\")) && row.student_id === Number(pm.collectionVariables.get(\"student_id\")));",
+                  "    pm.expect(matching.length).to.equal(1);",
+                  "    pm.expect(matching[0].id).to.equal(Number(pm.collectionVariables.get(\"redemption_id\")));",
+                  "    pm.expect(matching[0].status).to.equal(\"pending\");",
+                  "    pm.expect(matching[0].award_name).to.equal(pm.collectionVariables.get(\"award_name\"));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "a5307627-e66b-53d7-aace-0058bd5bb50d",
+          "name": "15 [admin] Approve redemption",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/redemptions/{{redemption_id}}",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Redemption Approved with administrator processing metadata\", () => {",
+                  "    pm.expect(body.redemption.id).to.equal(Number(pm.collectionVariables.get(\"redemption_id\")));",
+                  "    pm.expect(body.redemption.status).to.equal(\"approved\");",
+                  "    pm.expect(body.redemption.processed_by).to.equal(Number(pm.collectionVariables.get(\"admin_id\")));",
+                  "    pm.expect(Boolean(body.redemption.processed_at)).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "9502e01d-0d8d-587d-b4ce-0955c00bb777",
+          "name": "16 [admin] Verify approval deducts exactly one item",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/awards",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const rows = pm.response.json();",
+                  "const award = rows.find(item => item.id === Number(pm.collectionVariables.get(\"award_id\")));",
+                  "pm.test(\"Committed inventory decreased exactly once on approval\", () => {",
+                  "    pm.expect(Boolean(award)).to.equal(true);",
+                  "    pm.expect(award.quantity_available).to.equal(Number(pm.collectionVariables.get(\"inventory_before\")) - 1);",
+                  "    pm.expect(rows.filter(item => item.id === award.id).length).to.equal(1);",
+                  "});",
+                  "pm.collectionVariables.set(\"inventory_after_approval\", award.quantity_available);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "d22f0cf7-9eae-55c7-aca6-0c25b17acd37",
+          "name": "17 [admin] Fulfill Approved redemption",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/redemptions/{{redemption_id}}",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"fulfilled\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Approved redemption transitions to Fulfilled with administrator metadata\", () => {",
+                  "    pm.expect(body.redemption.id).to.equal(Number(pm.collectionVariables.get(\"redemption_id\")));",
+                  "    pm.expect(body.redemption.status).to.equal(\"fulfilled\");",
+                  "    pm.expect(body.redemption.processed_by).to.equal(Number(pm.collectionVariables.get(\"admin_id\")));",
+                  "    pm.expect(Boolean(body.redemption.processed_at)).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "2e3e1954-6616-57fa-af17-c866e8acb74a",
+          "name": "18 [admin] Verify fulfillment preserves inventory",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/awards",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const award = pm.response.json().find(item => item.id === Number(pm.collectionVariables.get(\"award_id\")));",
+                  "pm.test(\"Fulfillment does not deduct inventory a second time\", () => {",
+                  "    pm.expect(Boolean(award)).to.equal(true);",
+                  "    pm.expect(award.quantity_available).to.equal(Number(pm.collectionVariables.get(\"inventory_after_approval\")));",
+                  "    pm.expect(award.quantity_available).to.equal(0);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "c372e433-24b7-50b7-824e-7a9130b25640",
+          "name": "19 [student] Request eligible zero-stock Award again",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/redemptions",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"award_id\": {{award_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "if (pm.response.code !== 201) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Zero stock and prior fulfillment do not prevent a new eligible Pending request\", () => {",
+                  "    pm.expect(body.id).not.to.equal(Number(pm.collectionVariables.get(\"redemption_id\")));",
+                  "    pm.expect(body.student_id).to.equal(Number(pm.collectionVariables.get(\"student_id\")));",
+                  "    pm.expect(body.award_id).to.equal(Number(pm.collectionVariables.get(\"award_id\")));",
+                  "    pm.expect(body.status).to.equal(\"pending\");",
+                  "});",
+                  "pm.collectionVariables.set(\"rejected_redemption_id\", body.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "655dac0b-2498-514f-8df2-f01b09ac18ba",
+          "name": "20 [admin] Persist out-of-stock rejection outcome",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/redemptions/{{rejected_redemption_id}}",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Approval at zero stock returns a persisted Rejected business outcome\", () => {",
+                  "    pm.expect(body.redemption.id).to.equal(Number(pm.collectionVariables.get(\"rejected_redemption_id\")));",
+                  "    pm.expect(body.redemption.status).to.equal(\"rejected\");",
+                  "    pm.expect(body.redemption.processed_by).to.equal(Number(pm.collectionVariables.get(\"admin_id\")));",
+                  "    pm.expect(Boolean(body.redemption.processed_at)).to.equal(true);",
+                  "    pm.expect(body.message).to.equal(\"Request rejected because the Award is out of stock.\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "219b21f5-fff2-5c03-bd22-9ac90487104c",
+          "name": "21 [student] Read private persisted redemption history",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/redemptions?student_id={{admin_id}}",
+            "description": "Supplying the dynamically captured administrator ID cannot select another user's private history.",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code !== 200) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "const rows = pm.response.json();",
+                  "pm.test(\"History ignores client ownership selection and preserves both final outcomes\", () => {",
+                  "    const owner = Number(pm.collectionVariables.get(\"student_id\"));",
+                  "    pm.expect(rows.every(row => row.student_id === owner)).to.equal(true);",
+                  "    const fulfilled = rows.find(row => row.id === Number(pm.collectionVariables.get(\"redemption_id\")));",
+                  "    const rejected = rows.find(row => row.id === Number(pm.collectionVariables.get(\"rejected_redemption_id\")));",
+                  "    pm.expect(Boolean(fulfilled && rejected)).to.equal(true);",
+                  "    pm.expect(fulfilled.status).to.equal(\"fulfilled\");",
+                  "    pm.expect(rejected.status).to.equal(\"rejected\");",
+                  "    pm.expect(fulfilled.award_name).to.equal(pm.collectionVariables.get(\"award_name\"));",
+                  "    pm.expect(rejected.award_name).to.equal(pm.collectionVariables.get(\"award_name\"));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Authorization and Error Handling",
+      "item": [
+        {
+          "id": "6f3428f2-8afd-5789-811f-f4ec2a20e9ee",
+          "name": "22 [student] Deny student administrator access",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/admin/awards",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));",
+                  "if (pm.response.code !== 403) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "pm.test(\"Authenticated student receives a permission error\", () => {",
+                  "    pm.expect(pm.response.json().detail).to.equal(\"You are not authorized to access this page\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "14e89496-1f98-5999-9ee6-4b7693ec1196",
+          "name": "23 [student] Reject invalid volunteer hours",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/volunteer-submissions",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activity_name\": \"Invalid zero-hour request\",\n  \"organization\": \"Campus Volunteers\",\n  \"hours\": 0,\n  \"activity_date\": \"2026-10-20\",\n  \"supporting_information\": \"Must not be persisted\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 422\", () => pm.response.to.have.status(422));",
+                  "if (pm.response.code !== 422) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "pm.test(\"Invalid hours receive the validation error\", () => {",
+                  "    pm.expect(pm.response.json().detail).to.equal(\"Hours must be greater than zero.\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "03e3765f-4552-56c5-8370-571a7c07740d",
+          "name": "24 [student] Logout and clear authentication cookie",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/auth/logout",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+                  "if (pm.response.code !== 204) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "pm.test(\"Logout has no response body and expires the authentication cookie\", () => {",
+                  "    pm.expect(pm.response.text()).to.equal(\"\");",
+                  "    const clearing = pm.response.headers.all().find(header =>",
+                  "        header.key.toLowerCase() === \"set-cookie\" &&",
+                  "        /^access_token=/.test(header.value) && /max-age=0/i.test(header.value));",
+                  "    pm.expect(Boolean(clearing)).to.equal(true);",
+                  "});",
+                  "pm.variables.set(\"student_cookie\", \"\");",
+                  "pm.variables.set(\"admin_cookie\", \"\");"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "73632416-9075-5fbd-b6e4-088cad4ab4e0",
+          "name": "25 [anonymous] Deny anonymous progress after logout",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/progress",
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "protocolProfileBehavior": {
+            "disableCookies": true,
+            "followRedirects": false
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));",
+                  "if (pm.response.code !== 401) {",
+                  "    pm.execution.setNextRequest(null);",
+                  "    throw new Error(\"Unexpected HTTP status; stop before dependent operations.\");",
+                  "}",
+                  "",
+                  "",
+                  "pm.test(\"Anonymous request contains no role cookie and receives an authentication challenge\", () => {",
+                  "    pm.expect(pm.request.headers.has(\"Cookie\")).to.equal(false);",
+                  "    pm.expect(pm.response.json().detail).to.equal(\"Could not validate credentials\");",
+                  "    pm.expect(pm.response.headers.get(\"WWW-Authenticate\")).to.equal(\"Bearer\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
