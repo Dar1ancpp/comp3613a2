@@ -1,8 +1,55 @@
-# comp3613a1
+# COMP3613 Assignment 2 - Student Awards
 
-COMP 3613 Assignment 1 starter ([uwidcit/comp3613a1](https://github.com/uwidcit/comp3613a1)). Built on **FastStarter** (FastAPI + SQLModel).
+Student Awards is a FastAPI + SQLModel application for submitting volunteer hours,
+tracking approved-hour progress and milestones, and requesting Awards. Administrators
+review hours, manage the Award catalogue and inventory, and process redemptions.
 
-**Assignment brief, agents, and GitHub Education link:** [ASSIGNMENT.md](ASSIGNMENT.md)
+This repository contains the Assignment 2 implementation, finalized test plans,
+automated tests, API collection, browser-assisted UAT evidence and submission report.
+
+## Assignment 2 quick start
+
+1. Clone [Dar1ancpp/comp3613a2](https://github.com/Dar1ancpp/comp3613a2), create a Python
+   virtual environment and install `requirements.txt` using the setup steps below.
+2. Configure the private local `.env` from `.env.example`. Development uses only the
+   repository-local `a2_development.db`; keep private values and all databases out of Git.
+3. For a new, empty development environment only, follow the initialization instructions
+   below. Preserve existing UAT data; do not reset or reseed an existing database.
+4. Run `python manage.py run --host 127.0.0.1 --port 5000` and open
+   [the local development application](http://127.0.0.1:5000).
+
+## Assignment 2 testing and documentation
+
+Recorded results: **24 unit passes**, **32 integration passes**, **25 Postman requests
+with 77 passing assertions**, and **17 approved UAT PASS cases** with 38 screenshots.
+These are completed results, not a request to run or reset any environment.
+
+```powershell
+python -B -m pytest -p no:cacheprovider tests/unit -v --disable-warnings
+python -B -m pytest -p no:cacheprovider tests/integration -v --disable-warnings
+```
+
+The integration fixtures select the guarded test profile before application imports;
+see [integration execution and isolation](tests/integration/README.md). API collection
+execution uses its separate local Postman profile and is documented in
+[postman/README.md](postman/README.md). Browser-assisted UAT used visible Microsoft Edge
+and the development application at port 5000.
+
+- Plans: [UAT](docs/a2/uat-plan.md), [unit](docs/a2/unit-test-plan.md) and
+  [integration](docs/a2/integration-test-plan.md).
+- Reports: [submission PDF](output/pdf/COMP3613_A2_816044022_Darian_Jagdeo.pdf),
+  [report source](docs/a2/final-report-draft.md),
+  [accepted UAT execution report](docs/a2/uat-execution-report.html) and
+  [UAT case review summary](docs/a2/uat-review-summary.md).
+- Design and evidence: [implemented ERD](docs/a2/implemented-erd.png),
+  [use case diagram](docs/diagrams/use-case.png), [wireframes](docs/wireframes) and
+  [UAT evidence](docs/a2/evidence/uat).
+- API artifacts: [Postman collection JSON](postman/student-awards-a2.postman_collection.json)
+  and [safe example environment](postman/student-awards-a2.postman_environment.example.json).
+
+The detailed setup, CLI and starter-framework references below are retained for context.
+Assignment 2 materials above are the relevant submission documents; the inherited
+[starter assignment/agent guide](ASSIGNMENT.md) describes the original framework.
 
 Based on the [fullstack FastAPI template](https://github.com/fastapi/full-stack-fastapi-template) with a layered architecture that reduces repeated code [(DRY)](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) across CLI, headless API, and fullstack UI.
 
@@ -32,8 +79,8 @@ Third-party binaries that are not on PyPI are **committed** under `vendor/` (Pla
 ### 1. Clone
 
 ```bash
-git clone https://github.com/uwidcit/comp3613a1.git
-cd comp3613a1
+git clone https://github.com/Dar1ancpp/comp3613a2.git
+cd comp3613a2
 ```
 
 ### 2. Virtual environment and install dependencies
@@ -94,7 +141,7 @@ Environment variables take precedence over dotenv values; remove inherited
 Explicit production configuration still supports PostgreSQL; neither local
 profile selects it. No Assignment 1 database or deployment is needed locally.
 
-#### Assignment 2 test profile (for future pytest suites)
+#### Assignment 2 test profile
 
 The ignored `.env.test` uses **`a2_test.db` in this repository root**, a separate
 secret, and `ENV=test`. `.env.test.example` is the safe template for new clones.
@@ -104,7 +151,7 @@ machine. Neither test file falls back to the development `.env`.
 Select the profile **before any application import**, in a fresh process:
 
 ```powershell
-# Future use, after the test suites have been implemented:
+# Select the test profile in a fresh process:
 $previousA2Env = $env:ENV
 try {
     $env:ENV = "test"
@@ -118,12 +165,12 @@ try {
 }
 ```
 
-For a future pytest `conftest.py`, select `ENV=test` before importing `app.main`
-or `app.database`. Session fixtures, lifespan startup, CLI sessions, and schema
-recovery must all use that test engine. Fixtures will also need repeatable test
-data setup/cleanup; no test fixtures or test cases are implemented yet. Ordinary
-`pytest` does not automatically load `.env.test`; explicit selection is required.
-Do not switch profiles after importing an engine into a running process.
+The implemented [integration fixtures](tests/integration/conftest.py) select
+`ENV=test` before importing `app.main` or `app.database`, guard the exact database
+target and manage repeatable test data setup/cleanup. See the integration README
+for serial execution and isolation details. Other commands must select their
+profile explicitly; do not switch profiles after importing an engine into a
+running process.
 
 SQLite engine configuration permits FastAPI's thread usage and enables foreign
 keys on every future connection. The current models and queries use constructs
@@ -190,7 +237,7 @@ Commands are implemented in `app/cli.py` (stdlib `argparse`) and invoked via `ma
 | `python manage.py run` | Start Uvicorn (reload unless `ENV=production`) |
 | `python manage.py users` | Print users in the DB |
 | `python manage.py transcripts` | Optional: package agent-written `docs/transcripts/*.md` into INDEX + zip (no IDE scrape) |
-| `python manage.py report --name "..." --id "..."` | **Submission package:** merge `docs/judge.md`, package `docs/transcripts/`, write `docs/report.pdf`. Guide must run student-judge and **pull chats into `docs/transcripts/`** first (Copilot/Cursor/OpenCode). Incomplete drafts allowed. Fails only if course skills were edited |
+| `python manage.py report --name "..." --id "..."` | **Legacy starter report export:** merge `docs/judge.md`, package `docs/transcripts/`, write `docs/report.pdf`. Guide must run student-judge and **pull chats into `docs/transcripts/`** first (Copilot/Cursor/OpenCode). Incomplete drafts allowed. Fails only if course skills were edited. This is separate from the A2 submission PDF linked above |
 
 | `python manage.py usecase` | Render `docs/diagrams/use-case.json` to a UML use-case PNG via the vendored PlantUML JAR (`docs/diagrams/use-case.png`) |
 | `python manage.py skills-verify` | Check course skills against `.agents/skills.lock.json` |
@@ -344,7 +391,7 @@ A route that runs `select(…)` / `db.exec(…)` breaks the architecture. Put fi
 ## App structure
 
 ```text
-comp3613a1
+comp3613a2
 |-- .agents/skills/           # Guide + Judge (Cursor, Copilot, OpenCode)
 |-- .cursor/skills/          # same skills (older Cursor)
 |-- .cursor/mcp.json         # Render MCP (Cursor)

@@ -26,7 +26,7 @@ The existing diagram represents the implemented three student workflows and thei
 
 ![Implemented Student Awards database ERD](implemented-erd.png)
 
-Editable source: [implemented-erd.mmd](implemented-erd.mmd). The diagram was checked against all five [SQLModel table definitions](../../app/models/__init__.py). Entity labels show actual table names and model class names. Render this image at a readable size, preferably on a landscape page during eventual PDF assembly.
+Editable source: [implemented-erd.mmd](implemented-erd.mmd). The diagram was checked against all five [SQLModel table definitions](../../app/models/__init__.py). Entity labels show actual table names and model class names.
 
 The `user` table contains `id`, unique `username`, unique `email`, `password` and `role`. **The actual field is named `password`; it stores a password hash**, as implemented by [registration/authentication](../../app/services/auth_service.py) and [password utilities](../../app/utilities/security.py). No password values or hashes are reproduced here. Account-creation schemas assign stored roles `regular_user` and `admin`; these are displayed as student and administrator. The model's `role` column is a plain string with an empty-string default, not a database enum.
 
@@ -1070,7 +1070,7 @@ FastAPI routes bind requests and delegate to services; repositories handle SQLMo
 
 Key implementation locations: [models](../../app/models), [services](../../app/services), [repositories](../../app/repositories), [browser/API routers](../../app/routers) and [authorization dependencies](../../app/dependencies/auth.py).
 
-The repository URL is the configured A2 origin. The audit found final UAT documentation/evidence changes still local; publication of the final reviewed materials must be confirmed before submission. No commit or push was performed for this draft.
+Implementation and supporting evidence are identified by repository-relative paths in this report.
 
 ### 4.2 Unit tests
 
@@ -1082,7 +1082,7 @@ Modules: `test_volunteer_submission_service.py`, `test_progress_service.py`, `te
 
 Nine modules in [tests/integration](../../tests/integration) exercise real FastAPI handlers, authentication dependencies, services, repositories and SQLite persistence together. The 20 IT plan cases include parameterized variants; additional JSON authentication checks bring the final suite to **32 invocations**. Coverage includes startup isolation, registration/login, access control, hour validation/review, progress/ranks, Award management, private histories and redemption transitions.
 
-The [integration fixtures](../../tests/integration/conftest.py) select the guarded A2 test profile before application imports and isolate setup/cleanup to the dedicated test database. [CLI/isolation instructions](../../tests/integration/README.md) are retained in the repository. This documentation task did not execute those fixtures or access that database.
+The [integration fixtures](../../tests/integration/conftest.py) select the guarded A2 test profile before application imports and isolate setup/cleanup to the dedicated test database. [CLI/isolation instructions](../../tests/integration/README.md) are retained in the repository.
 
 ### 4.4 Postman API tests
 
@@ -1092,14 +1092,14 @@ Dynamic IDs and separate run-local role sessions avoid hard-coded record IDs and
 
 ## 5. Test execution and verified results
 
-These are recorded results from completed testing, not new executions during draft preparation. The unit and integration commands visible in the result screenshots were:
+The following results were recorded from the completed test runs. The unit and integration commands visible in the result screenshots were:
 
 ```powershell
 python -B -m pytest -p no:cacheprovider tests/unit -v --disable-warnings
 python -B -m pytest -p no:cacheprovider tests/integration -v --disable-warnings
 ```
 
-Unit tests use isolated objects/mocks. Integration tests use the guarded test profile and dedicated test database. UAT used only `http://127.0.0.1:5000` with `a2_development.db`; API collection testing used the separate guarded local Postman profile at port 5001. These environments are distinct. No tests, servers or database commands were run for this documentation task.
+Unit tests use isolated objects/mocks. Integration tests use the guarded test profile and dedicated test database. UAT used only `http://127.0.0.1:5000` with `a2_development.db`; API collection testing used the separate guarded local Postman profile at port 5001. These environments are distinct.
 
 For Postman, the recorded workflow imports the collection and private local environment, selects all requests in saved order, and runs one complete iteration through Collection Runner. The documented local CLI equivalent is shown below; the populated environment is ignored/private and is not part of the submission:
 
@@ -1133,7 +1133,7 @@ The [authoritative UAT execution report](uat-execution-report.html) and [review 
 
 ## 6. Complete UAT execution report
 
-The complete HTML body below is reproduced from the finalized report, retaining the lecturer-template headings, case tables, actual observations, dates, evidence links and completed personal sign-off fields. During eventual PDF assembly it must be rendered as HTML tables, with readable pagination, rather than printed as source code or replaced by a summary. The authoritative source file is unchanged.
+The complete finalized UAT report follows, retaining the lecturer-template headings, case tables, actual observations, dates, evidence links and completed personal sign-off fields.
 
 <!-- BEGIN COMPLETE HTML BODY: uat-execution-report.html -->
 <header>
@@ -1527,7 +1527,7 @@ Admin raised Empty stock from 0 to 1. A request became Pending and quantity stay
 
 ## 7. Selected supporting UAT evidence
 
-All 38 official screenshots remain in [evidence/uat](evidence/uat), with case-by-case links in the complete report and [review summary](uat-review-summary.md). The following three existing images provide a compact supporting selection; no new screenshots were created.
+All 38 official screenshots remain in [evidence/uat](evidence/uat), with case-by-case links in the complete report and [review summary](uat-review-summary.md). The following three images provide a compact supporting selection.
 
 ### Approved and rejected volunteer hours
 
@@ -1550,4 +1550,4 @@ Retained observations: student attempts to open administrator pages produced aut
 - **Test implementation (25%):** Section 4 locates pytest modules and exported Postman scripts; Section 5 records their execution commands/workflow.
 - **Test reporting (25%):** Section 5 embeds all three required passing-test screenshots; Section 6 includes the complete UAT report, with Section 7 supplying selected evidence and links to the full set.
 
-Confirmed student identification is Darian Jagdeo, student ID 816044022. The UAT Tester Name is Darian Jagdeo and Tester Position is Student / Project Tester; the recorded execution date remains 27/10/2026. The student explicitly authorized the official UAT decision Accepted and the typed signature Darian Jagdeo. The signature is typed authorization, not a handwritten signature. All 17 case approvals and original execution records are preserved. The final PDF is prepared for student review before repository publication; no commit or push is authorized at this stage.
+Confirmed student identification is Darian Jagdeo, student ID 816044022. The UAT Tester Name is Darian Jagdeo and Tester Position is Student / Project Tester; the recorded execution date remains 27/10/2026. The student explicitly authorized the official UAT decision Accepted and the typed signature Darian Jagdeo. The signature is typed authorization, not a handwritten signature. All 17 case approvals and original execution records are preserved.
