@@ -1,0 +1,1709 @@
+{
+  "run_label": "UAT20261027r88c167",
+  "events": [
+    {
+      "label": "session",
+      "data": {
+        "run_label": "UAT20261027r88c167",
+        "student_username": "UAT20261027r88c167_a",
+        "student_email": "uat20261027r88c167_a@example.com",
+        "browser_version": "156.0.4314.42",
+        "channel": "msedge",
+        "headless": false,
+        "request_interception": false,
+        "both_contexts_initially_signed_out": true
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "http://127.0.0.1:5000/register",
+        "type": "document",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "http://127.0.0.1:5000/static/css/app.css",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://code.jquery.com/jquery-4.0.0.min.js",
+        "type": "script",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js",
+        "type": "script",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+        "type": "font",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://fonts.gstatic.com/s/materialsymbolsoutlined/v382/kJF4BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzazHD_dY40KH8nGzv3fzHVJU22ZZLsYEpzC_1veq5Y0.woff2",
+        "type": "font",
+        "status": 200
+      }
+    },
+    {
+      "label": "styling-check",
+      "data": {
+        "url": "http://127.0.0.1:5000/register",
+        "checks": {
+          "stylesheets_attached": true,
+          "bootstrap_css_declared": true,
+          "application_css_declared": true,
+          "bootstrap_js_loaded": true,
+          "jquery_loaded": true,
+          "inter_font_loaded": true,
+          "icon_font_loaded": true,
+          "no_resource_failures": true
+        },
+        "stylesheets": [
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+            "attached": true
+          },
+          {
+            "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+            "attached": true
+          },
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+            "attached": true
+          },
+          {
+            "url": "http://127.0.0.1:5000/static/css/app.css",
+            "attached": true
+          }
+        ],
+        "presentation": [
+          {
+            "tag": "INPUT",
+            "classes": "form-control",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 364
+          },
+          {
+            "tag": "INPUT",
+            "classes": "form-control",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 364
+          },
+          {
+            "tag": "INPUT",
+            "classes": "form-control",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 364
+          },
+          {
+            "tag": "BUTTON",
+            "classes": "btn btn-primary btn-lg",
+            "display": "block",
+            "padding": "8px 16px",
+            "border": "8px",
+            "width": 364
+          },
+          {
+            "tag": "A",
+            "classes": "btn btn-outline-secondary",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 364
+          }
+        ]
+      }
+    },
+    {
+      "label": "registration-preflight",
+      "data": {
+        "url": "http://127.0.0.1:5000/register",
+        "title": "Register",
+        "text": "\u2190 Home\nStudent Awards\n\nCreate an account and start recognizing your service.\n\nUsername\nEmail\nPassword\nRegister\nBack to sign in",
+        "links": [
+          {
+            "text": "\u2190 Home",
+            "href": "http://127.0.0.1:5000/"
+          },
+          {
+            "text": "Back to sign in",
+            "href": "http://127.0.0.1:5000/login"
+          }
+        ]
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "http://127.0.0.1:5000/register",
+        "type": "document",
+        "status": 303
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "http://127.0.0.1:5000/login",
+        "type": "document",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js",
+        "type": "script",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://code.jquery.com/jquery-4.0.0.min.js",
+        "type": "script",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "http://127.0.0.1:5000/static/css/app.css",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+        "type": "font",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://fonts.gstatic.com/s/materialsymbolsoutlined/v382/kJF4BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzazHD_dY40KH8nGzv3fzHVJU22ZZLsYEpzC_1veq5Y0.woff2",
+        "type": "font",
+        "status": 200
+      }
+    },
+    {
+      "label": "styling-check",
+      "data": {
+        "url": "http://127.0.0.1:5000/login",
+        "checks": {
+          "stylesheets_attached": true,
+          "bootstrap_css_declared": true,
+          "application_css_declared": true,
+          "bootstrap_js_loaded": true,
+          "jquery_loaded": true,
+          "inter_font_loaded": true,
+          "icon_font_loaded": true,
+          "no_resource_failures": true
+        },
+        "stylesheets": [
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+            "attached": true
+          },
+          {
+            "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+            "attached": true
+          },
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+            "attached": true
+          },
+          {
+            "url": "http://127.0.0.1:5000/static/css/app.css",
+            "attached": true
+          }
+        ],
+        "presentation": [
+          {
+            "tag": "INPUT",
+            "classes": "form-control",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 364
+          },
+          {
+            "tag": "INPUT",
+            "classes": "form-control",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 364
+          },
+          {
+            "tag": "BUTTON",
+            "classes": "btn btn-primary btn-lg",
+            "display": "block",
+            "padding": "8px 16px",
+            "border": "8px",
+            "width": 364
+          },
+          {
+            "tag": "A",
+            "classes": "btn btn-outline-secondary",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 364
+          }
+        ]
+      }
+    },
+    {
+      "label": "registration-result",
+      "data": {
+        "url": "http://127.0.0.1:5000/login",
+        "title": "Sign in",
+        "text": "\u2190 Home\nStudent Awards\n\nSign in to track your service and awards.\n\nUsername\nPassword\nSign in\nCreate an account\nRegistration completed! Sign in now!",
+        "links": [
+          {
+            "text": "\u2190 Home",
+            "href": "http://127.0.0.1:5000/"
+          },
+          {
+            "text": "Create an account",
+            "href": "http://127.0.0.1:5000/register"
+          }
+        ]
+      }
+    },
+    {
+      "label": "registration-checks",
+      "data": {
+        "redirect_status": 303,
+        "redirect_location": "http://127.0.0.1:5000/login",
+        "at_login": true,
+        "exact_confirmation_visible": true,
+        "login_form_visible": true,
+        "no_sign_out_link": true
+      }
+    },
+    {
+      "label": "styling-check",
+      "data": {
+        "url": "http://127.0.0.1:5000/login",
+        "checks": {
+          "stylesheets_attached": true,
+          "bootstrap_css_declared": true,
+          "application_css_declared": true,
+          "bootstrap_js_loaded": true,
+          "jquery_loaded": true,
+          "inter_font_loaded": true,
+          "icon_font_loaded": true,
+          "no_resource_failures": true
+        },
+        "stylesheets": [
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+            "attached": true
+          },
+          {
+            "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+            "attached": true
+          },
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+            "attached": true
+          },
+          {
+            "url": "http://127.0.0.1:5000/static/css/app.css",
+            "attached": true
+          }
+        ],
+        "presentation": [
+          {
+            "tag": "INPUT",
+            "classes": "form-control",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 364
+          },
+          {
+            "tag": "INPUT",
+            "classes": "form-control",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 364
+          },
+          {
+            "tag": "BUTTON",
+            "classes": "btn btn-primary btn-lg",
+            "display": "block",
+            "padding": "8px 16px",
+            "border": "8px",
+            "width": 364
+          },
+          {
+            "tag": "A",
+            "classes": "btn btn-outline-secondary",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 364
+          }
+        ]
+      }
+    },
+    {
+      "label": "screenshot",
+      "data": {
+        "filename": "UAT-1.1-REDO-01-registration-confirmation.png"
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "http://127.0.0.1:5000/login",
+        "type": "document",
+        "status": 303
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "http://127.0.0.1:5000/app",
+        "type": "document",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js",
+        "type": "script",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://code.jquery.com/jquery-4.0.0.min.js",
+        "type": "script",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "http://127.0.0.1:5000/static/css/app.css",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+        "type": "font",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "student",
+        "url": "https://fonts.gstatic.com/s/materialsymbolsoutlined/v382/kJF4BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzazHD_dY40KH8nGzv3fzHVJU22ZZLsYEpzC_1veq5Y0.woff2",
+        "type": "font",
+        "status": 200
+      }
+    },
+    {
+      "label": "styling-check",
+      "data": {
+        "url": "http://127.0.0.1:5000/app",
+        "checks": {
+          "stylesheets_attached": true,
+          "bootstrap_css_declared": true,
+          "application_css_declared": true,
+          "bootstrap_js_loaded": true,
+          "jquery_loaded": true,
+          "inter_font_loaded": true,
+          "icon_font_loaded": true,
+          "no_resource_failures": true
+        },
+        "stylesheets": [
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+            "attached": true
+          },
+          {
+            "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+            "attached": true
+          },
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+            "attached": true
+          },
+          {
+            "url": "http://127.0.0.1:5000/static/css/app.css",
+            "attached": true
+          }
+        ],
+        "presentation": [
+          {
+            "tag": "A",
+            "classes": "btn btn-brand",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 102
+          },
+          {
+            "tag": "A",
+            "classes": "btn btn-outline-secondary",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 93
+          },
+          {
+            "tag": "A",
+            "classes": "btn btn-outline-secondary",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 82
+          }
+        ]
+      }
+    },
+    {
+      "label": "student-dashboard",
+      "data": {
+        "url": "http://127.0.0.1:5000/app",
+        "title": "Home",
+        "text": "Student Awards\nStudent dashboard\nProgress\nLog hours\nAwards\nSign out\nSigned in as UAT20261027r88c167_a\n\nSTUDENT DASHBOARD\n\nWelcome to Student Awards\n\nA quick view of your volunteering progress and open requests.\n\nVerified hours\n0\nView progress\nLeaderboard rank\n#1\nView leaderboard\nPending hour submissions\n0\nView submissions\nPending redemptions\n0\nView Awards\nNext milestone\nBronze Volunteer\n0 / 10 hrs\nQuick links\nLog hours\nProgress\nAwards",
+        "links": [
+          {
+            "text": "Student Awards",
+            "href": "http://127.0.0.1:5000/"
+          },
+          {
+            "text": "Student dashboard",
+            "href": "http://127.0.0.1:5000/app"
+          },
+          {
+            "text": "Progress",
+            "href": "http://127.0.0.1:5000/app/progress"
+          },
+          {
+            "text": "Log hours",
+            "href": "http://127.0.0.1:5000/app/hours"
+          },
+          {
+            "text": "Awards",
+            "href": "http://127.0.0.1:5000/app/awards"
+          },
+          {
+            "text": "Sign out",
+            "href": "http://127.0.0.1:5000/logout"
+          },
+          {
+            "text": "View progress",
+            "href": "http://127.0.0.1:5000/app/progress"
+          },
+          {
+            "text": "View leaderboard",
+            "href": "http://127.0.0.1:5000/app/progress"
+          },
+          {
+            "text": "View submissions",
+            "href": "http://127.0.0.1:5000/app/hours"
+          },
+          {
+            "text": "View Awards",
+            "href": "http://127.0.0.1:5000/app/awards"
+          },
+          {
+            "text": "Log hours",
+            "href": "http://127.0.0.1:5000/app/hours"
+          },
+          {
+            "text": "Progress",
+            "href": "http://127.0.0.1:5000/app/progress"
+          },
+          {
+            "text": "Awards",
+            "href": "http://127.0.0.1:5000/app/awards"
+          }
+        ]
+      }
+    },
+    {
+      "label": "student-checks",
+      "data": {
+        "checks": {
+          "at_app": true,
+          "correct_identity": true,
+          "required_navigation": {
+            "Progress": true,
+            "Log hours": true,
+            "Awards": true,
+            "Sign out": true
+          },
+          "administrator_navigation_absent": true
+        },
+        "redirect_status": 303,
+        "redirect_location": "http://127.0.0.1:5000/app"
+      }
+    },
+    {
+      "label": "styling-check",
+      "data": {
+        "url": "http://127.0.0.1:5000/app",
+        "checks": {
+          "stylesheets_attached": true,
+          "bootstrap_css_declared": true,
+          "application_css_declared": true,
+          "bootstrap_js_loaded": true,
+          "jquery_loaded": true,
+          "inter_font_loaded": true,
+          "icon_font_loaded": true,
+          "no_resource_failures": true
+        },
+        "stylesheets": [
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+            "attached": true
+          },
+          {
+            "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+            "attached": true
+          },
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+            "attached": true
+          },
+          {
+            "url": "http://127.0.0.1:5000/static/css/app.css",
+            "attached": true
+          }
+        ],
+        "presentation": [
+          {
+            "tag": "A",
+            "classes": "btn btn-brand",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 102
+          },
+          {
+            "tag": "A",
+            "classes": "btn btn-outline-secondary",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 93
+          },
+          {
+            "tag": "A",
+            "classes": "btn btn-outline-secondary",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 82
+          }
+        ]
+      }
+    },
+    {
+      "label": "screenshot",
+      "data": {
+        "filename": "UAT-1.1-REDO-02-student-dashboard.png"
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "http://127.0.0.1:5000/login",
+        "type": "document",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "http://127.0.0.1:5000/static/css/app.css",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://code.jquery.com/jquery-4.0.0.min.js",
+        "type": "script",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js",
+        "type": "script",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+        "type": "font",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.gstatic.com/s/materialsymbolsoutlined/v382/kJF4BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzazHD_dY40KH8nGzv3fzHVJU22ZZLsYEpzC_1veq5Y0.woff2",
+        "type": "font",
+        "status": 200
+      }
+    },
+    {
+      "label": "styling-check",
+      "data": {
+        "url": "http://127.0.0.1:5000/login",
+        "checks": {
+          "stylesheets_attached": true,
+          "bootstrap_css_declared": true,
+          "application_css_declared": true,
+          "bootstrap_js_loaded": true,
+          "jquery_loaded": true,
+          "inter_font_loaded": true,
+          "icon_font_loaded": true,
+          "no_resource_failures": true
+        },
+        "stylesheets": [
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+            "attached": true
+          },
+          {
+            "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+            "attached": true
+          },
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+            "attached": true
+          },
+          {
+            "url": "http://127.0.0.1:5000/static/css/app.css",
+            "attached": true
+          }
+        ],
+        "presentation": [
+          {
+            "tag": "INPUT",
+            "classes": "form-control",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 364
+          },
+          {
+            "tag": "INPUT",
+            "classes": "form-control",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 364
+          },
+          {
+            "tag": "BUTTON",
+            "classes": "btn btn-primary btn-lg",
+            "display": "block",
+            "padding": "8px 16px",
+            "border": "8px",
+            "width": 364
+          },
+          {
+            "tag": "A",
+            "classes": "btn btn-outline-secondary",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 364
+          }
+        ]
+      }
+    },
+    {
+      "label": "admin-login-preflight",
+      "data": {
+        "url": "http://127.0.0.1:5000/login",
+        "title": "Sign in",
+        "text": "\u2190 Home\nStudent Awards\n\nSign in to track your service and awards.\n\nUsername\nPassword\nSign in\nCreate an account",
+        "links": [
+          {
+            "text": "\u2190 Home",
+            "href": "http://127.0.0.1:5000/"
+          },
+          {
+            "text": "Create an account",
+            "href": "http://127.0.0.1:5000/register"
+          }
+        ]
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "http://127.0.0.1:5000/login",
+        "type": "document",
+        "status": 303
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "http://127.0.0.1:5000/admin",
+        "type": "document",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js",
+        "type": "script",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://code.jquery.com/jquery-4.0.0.min.js",
+        "type": "script",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "http://127.0.0.1:5000/static/css/app.css",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+        "type": "font",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.gstatic.com/s/materialsymbolsoutlined/v382/kJF4BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzazHD_dY40KH8nGzv3fzHVJU22ZZLsYEpzC_1veq5Y0.woff2",
+        "type": "font",
+        "status": 200
+      }
+    },
+    {
+      "label": "styling-check",
+      "data": {
+        "url": "http://127.0.0.1:5000/admin",
+        "checks": {
+          "stylesheets_attached": true,
+          "bootstrap_css_declared": true,
+          "application_css_declared": true,
+          "bootstrap_js_loaded": true,
+          "jquery_loaded": true,
+          "inter_font_loaded": true,
+          "icon_font_loaded": true,
+          "no_resource_failures": true
+        },
+        "stylesheets": [
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+            "attached": true
+          },
+          {
+            "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+            "attached": true
+          },
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+            "attached": true
+          },
+          {
+            "url": "http://127.0.0.1:5000/static/css/app.css",
+            "attached": true
+          }
+        ],
+        "presentation": [
+          {
+            "tag": "A",
+            "classes": "btn btn-brand",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 102
+          },
+          {
+            "tag": "A",
+            "classes": "btn btn-outline-secondary",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 148
+          }
+        ]
+      }
+    },
+    {
+      "label": "administrator-dashboard",
+      "data": {
+        "url": "http://127.0.0.1:5000/admin",
+        "title": "Admin",
+        "text": "Student Awards\nAdmin dashboard\nApprovals\nAwards\nSign out\nSigned in as admin\n\nADMINISTRATOR WORKSPACE\n\nAdministrator dashboard\n\nMonitor requests and Award inventory from one summary.\n\nPending hour approvals\n0\nReview submissions\nPending redemptions\n0\nReview redemptions\nActive Awards\n3\nManage Awards\nLow-stock Awards\n1\nView inventory\nLow-stock Awards\nStudent Awards Hoodie\n2 left\nQuick links\nApprovals\nManage Awards",
+        "links": [
+          {
+            "text": "Student Awards",
+            "href": "http://127.0.0.1:5000/"
+          },
+          {
+            "text": "Admin dashboard",
+            "href": "http://127.0.0.1:5000/admin"
+          },
+          {
+            "text": "Approvals",
+            "href": "http://127.0.0.1:5000/admin/approvals"
+          },
+          {
+            "text": "Awards",
+            "href": "http://127.0.0.1:5000/admin/awards"
+          },
+          {
+            "text": "Sign out",
+            "href": "http://127.0.0.1:5000/logout"
+          },
+          {
+            "text": "Review submissions",
+            "href": "http://127.0.0.1:5000/admin/approvals"
+          },
+          {
+            "text": "Review redemptions",
+            "href": "http://127.0.0.1:5000/admin/approvals"
+          },
+          {
+            "text": "Manage Awards",
+            "href": "http://127.0.0.1:5000/admin/awards"
+          },
+          {
+            "text": "View inventory",
+            "href": "http://127.0.0.1:5000/admin/awards"
+          },
+          {
+            "text": "Approvals",
+            "href": "http://127.0.0.1:5000/admin/approvals"
+          },
+          {
+            "text": "Manage Awards",
+            "href": "http://127.0.0.1:5000/admin/awards"
+          }
+        ]
+      }
+    },
+    {
+      "label": "administrator-checks",
+      "data": {
+        "checks": {
+          "at_admin": true,
+          "correct_identity": true,
+          "required_navigation": {
+            "Approvals": true,
+            "Awards": true,
+            "Sign out": true
+          },
+          "separate_student_identity_unchanged": true
+        },
+        "redirect_status": 303,
+        "redirect_location": "http://127.0.0.1:5000/admin"
+      }
+    },
+    {
+      "label": "styling-check",
+      "data": {
+        "url": "http://127.0.0.1:5000/admin",
+        "checks": {
+          "stylesheets_attached": true,
+          "bootstrap_css_declared": true,
+          "application_css_declared": true,
+          "bootstrap_js_loaded": true,
+          "jquery_loaded": true,
+          "inter_font_loaded": true,
+          "icon_font_loaded": true,
+          "no_resource_failures": true
+        },
+        "stylesheets": [
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+            "attached": true
+          },
+          {
+            "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+            "attached": true
+          },
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+            "attached": true
+          },
+          {
+            "url": "http://127.0.0.1:5000/static/css/app.css",
+            "attached": true
+          }
+        ],
+        "presentation": [
+          {
+            "tag": "A",
+            "classes": "btn btn-brand",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 102
+          },
+          {
+            "tag": "A",
+            "classes": "btn btn-outline-secondary",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 148
+          }
+        ]
+      }
+    },
+    {
+      "label": "screenshot",
+      "data": {
+        "filename": "UAT-1.1-REDO-03-administrator-dashboard.png"
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "http://127.0.0.1:5000/admin/approvals",
+        "type": "document",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js",
+        "type": "script",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://code.jquery.com/jquery-4.0.0.min.js",
+        "type": "script",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "http://127.0.0.1:5000/static/css/app.css",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+        "type": "font",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.gstatic.com/s/materialsymbolsoutlined/v382/kJF4BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzazHD_dY40KH8nGzv3fzHVJU22ZZLsYEpzC_1veq5Y0.woff2",
+        "type": "font",
+        "status": 200
+      }
+    },
+    {
+      "label": "styling-check",
+      "data": {
+        "url": "http://127.0.0.1:5000/admin/approvals",
+        "checks": {
+          "stylesheets_attached": true,
+          "bootstrap_css_declared": true,
+          "application_css_declared": true,
+          "bootstrap_js_loaded": true,
+          "jquery_loaded": true,
+          "inter_font_loaded": true,
+          "icon_font_loaded": true,
+          "no_resource_failures": true
+        },
+        "stylesheets": [
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+            "attached": true
+          },
+          {
+            "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+            "attached": true
+          },
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+            "attached": true
+          },
+          {
+            "url": "http://127.0.0.1:5000/static/css/app.css",
+            "attached": true
+          }
+        ],
+        "presentation": []
+      }
+    },
+    {
+      "label": "administrator-approvals",
+      "data": {
+        "url": "http://127.0.0.1:5000/admin/approvals",
+        "title": "Approvals \u00b7 Student Awards",
+        "text": "Student Awards\nAdmin dashboard\nApprovals\nAwards\nSign out\nSigned in as admin\n\nADMINISTRATOR WORKSPACE\n\nVolunteer Hour Approvals\n\nInspect pending submissions before approving or rejecting them.\n\nPending volunteer hours\n0 pending\nThere are no pending volunteer-hour submissions.\nRedemption requests\n0 actionable\nThere are no pending or approved redemption requests.",
+        "links": [
+          {
+            "text": "Student Awards",
+            "href": "http://127.0.0.1:5000/"
+          },
+          {
+            "text": "Admin dashboard",
+            "href": "http://127.0.0.1:5000/admin"
+          },
+          {
+            "text": "Approvals",
+            "href": "http://127.0.0.1:5000/admin/approvals"
+          },
+          {
+            "text": "Awards",
+            "href": "http://127.0.0.1:5000/admin/awards"
+          },
+          {
+            "text": "Sign out",
+            "href": "http://127.0.0.1:5000/logout"
+          }
+        ]
+      }
+    },
+    {
+      "label": "approvals-checks",
+      "data": {
+        "http_ok": true,
+        "correct_url": true,
+        "heading_visible": true,
+        "correct_identity": true
+      }
+    },
+    {
+      "label": "styling-check",
+      "data": {
+        "url": "http://127.0.0.1:5000/admin/approvals",
+        "checks": {
+          "stylesheets_attached": true,
+          "bootstrap_css_declared": true,
+          "application_css_declared": true,
+          "bootstrap_js_loaded": true,
+          "jquery_loaded": true,
+          "inter_font_loaded": true,
+          "icon_font_loaded": true,
+          "no_resource_failures": true
+        },
+        "stylesheets": [
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+            "attached": true
+          },
+          {
+            "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+            "attached": true
+          },
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+            "attached": true
+          },
+          {
+            "url": "http://127.0.0.1:5000/static/css/app.css",
+            "attached": true
+          }
+        ],
+        "presentation": []
+      }
+    },
+    {
+      "label": "screenshot",
+      "data": {
+        "filename": "UAT-1.1-REDO-04-administrator-approvals.png"
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "http://127.0.0.1:5000/admin/awards",
+        "type": "document",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js",
+        "type": "script",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://code.jquery.com/jquery-4.0.0.min.js",
+        "type": "script",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "http://127.0.0.1:5000/static/css/app.css",
+        "type": "stylesheet",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+        "type": "font",
+        "status": 200
+      }
+    },
+    {
+      "label": "resource-response",
+      "data": {
+        "actor": "admin",
+        "url": "https://fonts.gstatic.com/s/materialsymbolsoutlined/v382/kJF4BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzazHD_dY40KH8nGzv3fzHVJU22ZZLsYEpzC_1veq5Y0.woff2",
+        "type": "font",
+        "status": 200
+      }
+    },
+    {
+      "label": "styling-check",
+      "data": {
+        "url": "http://127.0.0.1:5000/admin/awards",
+        "checks": {
+          "stylesheets_attached": true,
+          "bootstrap_css_declared": true,
+          "application_css_declared": true,
+          "bootstrap_js_loaded": true,
+          "jquery_loaded": true,
+          "inter_font_loaded": true,
+          "icon_font_loaded": true,
+          "no_resource_failures": true
+        },
+        "stylesheets": [
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+            "attached": true
+          },
+          {
+            "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+            "attached": true
+          },
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+            "attached": true
+          },
+          {
+            "url": "http://127.0.0.1:5000/static/css/app.css",
+            "attached": true
+          }
+        ],
+        "presentation": [
+          {
+            "tag": "BUTTON",
+            "classes": "btn btn-brand",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 109
+          },
+          {
+            "tag": "TABLE",
+            "classes": "table align-middle workflow-table mb-0",
+            "display": "table",
+            "padding": "0px",
+            "border": "0px",
+            "width": 1122
+          },
+          {
+            "tag": "BUTTON",
+            "classes": "btn btn-sm btn-outline-secondary",
+            "display": "inline-block",
+            "padding": "4px 8px",
+            "border": "4px",
+            "width": 43
+          },
+          {
+            "tag": "BUTTON",
+            "classes": "btn btn-sm btn-outline-secondary",
+            "display": "inline-block",
+            "padding": "4px 8px",
+            "border": "4px",
+            "width": 43
+          },
+          {
+            "tag": "BUTTON",
+            "classes": "btn btn-sm btn-outline-secondary",
+            "display": "inline-block",
+            "padding": "4px 8px",
+            "border": "4px",
+            "width": 43
+          }
+        ]
+      }
+    },
+    {
+      "label": "administrator-awards",
+      "data": {
+        "url": "http://127.0.0.1:5000/admin/awards",
+        "title": "Manage Awards \u00b7 Student Awards",
+        "text": "Student Awards\nAdmin dashboard\nApprovals\nAwards\nSign out\nSigned in as admin\n\nADMINISTRATOR WORKSPACE\n\nManage Awards\n\nCreate Awards and maintain thresholds, inventory, and availability.\n\nAdd Award\nAward catalogue\n3 total\nAWARD\tREQUIRED HOURS\tQUANTITY\tSTATUS\tACTION\nCoffee Voucher\nA voucher for the campus caf\u00e9.\n\t4\t10\tActive\tEdit\nMovie Ticket\nOne standard cinema admission.\n\t10\t4\tActive\tEdit\nStudent Awards Hoodie\nA Student Awards branded hoodie.\n\t25\t2\tActive\tEdit",
+        "links": [
+          {
+            "text": "Student Awards",
+            "href": "http://127.0.0.1:5000/"
+          },
+          {
+            "text": "Admin dashboard",
+            "href": "http://127.0.0.1:5000/admin"
+          },
+          {
+            "text": "Approvals",
+            "href": "http://127.0.0.1:5000/admin/approvals"
+          },
+          {
+            "text": "Awards",
+            "href": "http://127.0.0.1:5000/admin/awards"
+          },
+          {
+            "text": "Sign out",
+            "href": "http://127.0.0.1:5000/logout"
+          }
+        ]
+      }
+    },
+    {
+      "label": "awards-checks",
+      "data": {
+        "http_ok": true,
+        "correct_url": true,
+        "heading_visible": true,
+        "correct_identity": true,
+        "catalogue_visible": true
+      }
+    },
+    {
+      "label": "styling-check",
+      "data": {
+        "url": "http://127.0.0.1:5000/admin/awards",
+        "checks": {
+          "stylesheets_attached": true,
+          "bootstrap_css_declared": true,
+          "application_css_declared": true,
+          "bootstrap_js_loaded": true,
+          "jquery_loaded": true,
+          "inter_font_loaded": true,
+          "icon_font_loaded": true,
+          "no_resource_failures": true
+        },
+        "stylesheets": [
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+            "attached": true
+          },
+          {
+            "url": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css",
+            "attached": true
+          },
+          {
+            "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,100,1,200",
+            "attached": true
+          },
+          {
+            "url": "http://127.0.0.1:5000/static/css/app.css",
+            "attached": true
+          }
+        ],
+        "presentation": [
+          {
+            "tag": "BUTTON",
+            "classes": "btn btn-brand",
+            "display": "block",
+            "padding": "6px 12px",
+            "border": "6px",
+            "width": 109
+          },
+          {
+            "tag": "TABLE",
+            "classes": "table align-middle workflow-table mb-0",
+            "display": "table",
+            "padding": "0px",
+            "border": "0px",
+            "width": 1122
+          },
+          {
+            "tag": "BUTTON",
+            "classes": "btn btn-sm btn-outline-secondary",
+            "display": "inline-block",
+            "padding": "4px 8px",
+            "border": "4px",
+            "width": 43
+          },
+          {
+            "tag": "BUTTON",
+            "classes": "btn btn-sm btn-outline-secondary",
+            "display": "inline-block",
+            "padding": "4px 8px",
+            "border": "4px",
+            "width": 43
+          },
+          {
+            "tag": "BUTTON",
+            "classes": "btn btn-sm btn-outline-secondary",
+            "display": "inline-block",
+            "padding": "4px 8px",
+            "border": "4px",
+            "width": 43
+          }
+        ]
+      }
+    },
+    {
+      "label": "screenshot",
+      "data": {
+        "filename": "UAT-1.1-REDO-05-administrator-awards.png"
+      }
+    },
+    {
+      "label": "completed-observations",
+      "data": {
+        "new_student": "UAT20261027r88c167_a",
+        "registration_confirmation_observed": true,
+        "no_automatic_student_login_observed": true,
+        "student_dashboard_identity_navigation_observed": true,
+        "administrator_navigation_absent_for_student": true,
+        "administrator_dashboard_identity_navigation_observed": true,
+        "approvals_and_awards_loaded": true,
+        "screenshot_count": 5,
+        "no_resource_failures": true,
+        "other_UAT_cases_executed": false,
+        "acceptance": "Pending user review; not marked PASS",
+        "sign_out_scope": "Links visible and target /logout; logout behavior not exercised"
+      }
+    },
+    {
+      "label": "visual-review",
+      "data": {
+        "verified_by_operator": true,
+        "verified_screenshot_count": 5,
+        "registration_form_buttons_confirmation": "correctly styled and readable",
+        "student_and_admin_navigation_cards": "correctly styled and readable",
+        "approvals_cards": "correctly styled and readable",
+        "awards_table_buttons": "correctly styled and readable",
+        "passwords_or_session_credentials_in_images": false
+      }
+    }
+  ],
+  "screenshots": [
+    "UAT-1.1-REDO-01-registration-confirmation.png",
+    "UAT-1.1-REDO-02-student-dashboard.png",
+    "UAT-1.1-REDO-03-administrator-dashboard.png",
+    "UAT-1.1-REDO-04-administrator-approvals.png",
+    "UAT-1.1-REDO-05-administrator-awards.png"
+  ],
+  "status": "PASS \u2014 approved by user after evidence review",
+  "resource_failures": [],
+  "review": {
+    "decision": "PASS",
+    "approved_by": "User",
+    "date": "27/10/2026",
+    "reviewed_with": "ChatGPT",
+    "evidence_reviewed": "All five REDO screenshots and observation logs",
+    "execution_method": "Browser-assisted UAT in visible Microsoft Edge"
+  }
+}

@@ -178,7 +178,14 @@ assertion as intended, sent **zero HTTP requests**, and exited with code 1.
 
 Application code, the existing 24 unit/32 integration tests and finalized test
 plans were unchanged. No pytest execution was needed for these collection-only
-artifacts. Manual UAT and report preparation have not begun.
+artifacts. UAT has since been completed through Playwright-assisted visible
+Microsoft Edge interactions: all **17 cases were reviewed and approved PASS**,
+with **38 official screenshots**. The authoritative records are the
+[finalized UAT report](../docs/a2/uat-execution-report.html) and
+[review summary](../docs/a2/uat-review-summary.md). Personal tester details,
+the official acceptance decision and signature remain for the student to
+complete. An [A2 report draft](../docs/a2/final-report-draft.md) has been
+prepared for student review; the final PDF has not been generated.
 
 References: [Postman runtime cookie/redirect settings](https://github.com/postmanlabs/postman-runtime/blob/develop/docs/protocol-profile-behavior.md)
 and [Postman request-skipping API](https://learning.postman.com/latest-v-12/docs/tests-and-scripts/write-scripts/postman-sandbox-reference/pm-execution).

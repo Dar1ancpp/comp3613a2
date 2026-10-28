@@ -1,0 +1,258 @@
+{
+  "record_type": "historical_pre_final_review_snapshot",
+  "status_note": "Original batch-validation snapshot before approval of the remaining 15 cases. The original counters and evidence observations below are preserved; they are not the final acceptance status.",
+  "authoritative_final_status": {
+    "reviewed_approved_pass": 17,
+    "failed": 0,
+    "blocked": 0,
+    "execution_report": "../../uat-execution-report.html",
+    "review_summary": "../../uat-review-summary.md",
+    "personal_sign_off": "Pending student completion of tester name, tester position, Accepted/Rejected decision and signature."
+  },
+  "planned_case_count": 17,
+  "observed_case_count": 17,
+  "new_cases_executed": 15,
+  "approved_pass": 2,
+  "provisional_pass": 15,
+  "failed": 0,
+  "blocked": 0,
+  "new_screenshots": 30,
+  "total_official_screenshots": 38,
+  "report_evidence_links": 56,
+  "exact_plan_fields_match": true,
+  "plan_unchanged": true,
+  "previously_approved_sections_preserved": true,
+  "no_credentials_in_text_evidence": true,
+  "overall_decision_and_signature_blank": true,
+  "final_pdf_prepared": false,
+  "screenshots": [
+    {
+      "case": "1.1",
+      "filename": "UAT-1.1-REDO-01-registration-confirmation.png",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "case": "1.1",
+      "filename": "UAT-1.1-REDO-02-student-dashboard.png",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "case": "1.1",
+      "filename": "UAT-1.1-REDO-03-administrator-dashboard.png",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "case": "1.1",
+      "filename": "UAT-1.1-REDO-04-administrator-approvals.png",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "case": "1.1",
+      "filename": "UAT-1.1-REDO-05-administrator-awards.png",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "case": "1.2",
+      "filename": "UAT-1.2-01-incorrect-password.png",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "case": "1.2",
+      "filename": "UAT-1.2-02-nonexistent-username.png",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "case": "1.2",
+      "filename": "UAT-1.2-03-dashboard-access-denied.png",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "case": "1.3",
+      "filename": "UAT-1.3-01-logout-sign-in.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "1.3",
+      "filename": "UAT-1.3-02-signed-out-access-denied.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "1.4",
+      "filename": "UAT-1.4-01-student-navigation.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "2.1",
+      "filename": "UAT-2.1-01-whole-fractional-pending-history.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "2.1",
+      "filename": "UAT-2.1-02-pending-hours-not-counted.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "2.2",
+      "filename": "UAT-2.2-01-invalid-negative-hours-blocked.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "2.2",
+      "filename": "UAT-2.2-02-unchanged-submission-history.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "2.3",
+      "filename": "UAT-2.3-01-submission-review-details.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "2.3",
+      "filename": "UAT-2.3-02-approved-and-rejected-hour-history.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "3.1",
+      "filename": "UAT-3.1-01-bronze-below-threshold.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "3.1",
+      "filename": "UAT-3.1-02-bronze-complete-at-ten-hours.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "3.2",
+      "filename": "UAT-3.2-01-tied-ranks-and-zero-hour-students.png",
+      "width": 1425,
+      "height": 1149
+    },
+    {
+      "case": "3.2",
+      "filename": "UAT-3.2-02-lower-rank-current-student.png",
+      "width": 1425,
+      "height": 1149
+    },
+    {
+      "case": "4.1",
+      "filename": "UAT-4.1-01-created-award-catalogue.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "4.1",
+      "filename": "UAT-4.1-02-student-catalogue-including-zero-stock.png",
+      "width": 1425,
+      "height": 1138
+    },
+    {
+      "case": "4.2",
+      "filename": "UAT-4.2-01-duplicate-name-rejected.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "4.2",
+      "filename": "UAT-4.2-02-negative-edit-quantity-blocked.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "4.2",
+      "filename": "UAT-4.2-03-isolated-negative-edit-quantity-blocked.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "4.3",
+      "filename": "UAT-4.3-01-edited-voucher-locked-at-25-hours.png",
+      "width": 1425,
+      "height": 1138
+    },
+    {
+      "case": "4.3",
+      "filename": "UAT-4.3-02-inactive-award-management.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "4.3",
+      "filename": "UAT-4.3-03-reactivated-voucher-redeem-available.png",
+      "width": 1425,
+      "height": 1138
+    },
+    {
+      "case": "5.1",
+      "filename": "UAT-5.1-01-redemption-confirmation-modal.png",
+      "width": 1440,
+      "height": 1138
+    },
+    {
+      "case": "5.1",
+      "filename": "UAT-5.1-02-single-pending-request-no-duplicate-action.png",
+      "width": 1425,
+      "height": 1146
+    },
+    {
+      "case": "5.2",
+      "filename": "UAT-5.2-01-A-own-pending-history.png",
+      "width": 1425,
+      "height": 1146
+    },
+    {
+      "case": "5.2",
+      "filename": "UAT-5.2-02-B-own-pending-history.png",
+      "width": 1425,
+      "height": 1146
+    },
+    {
+      "case": "6.1",
+      "filename": "UAT-6.1-01-approved-request-awaiting-fulfillment.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "6.1",
+      "filename": "UAT-6.1-02-fulfilled-history-and-unchanged-stock.png",
+      "width": 1425,
+      "height": 1146
+    },
+    {
+      "case": "6.2",
+      "filename": "UAT-6.2-01-repeat-rejected-earlier-fulfillment-preserved.png",
+      "width": 1425,
+      "height": 1191
+    },
+    {
+      "case": "6.3",
+      "filename": "UAT-6.3-01-out-of-stock-approval-rejected.png",
+      "width": 1440,
+      "height": 1100
+    },
+    {
+      "case": "6.3",
+      "filename": "UAT-6.3-02-rejected-request-zero-inventory.png",
+      "width": 1425,
+      "height": 1235
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+%% Student Awards A2: implemented SQLModel schema, verified 27 October 2026.
+%% Sources: app/models/{user,volunteer_submission,milestone,award,redemption}.py.
+%% Entity identifiers are SQLModel's default physical table names.
+%% Dotted lines are non-identifying FKs: none forms part of the child PK.
+%% "Optional" means nullable; every other field is NOT NULL. PKs are generated integers.
+%% Model defaults: role is empty, nullable fields are NULL; status is pending.
+%% gt/ge validation is implemented in Python; it is not shown as a DB CHECK.
+%% Roles come from app/schemas/user.py; role itself is a plain string column.
+erDiagram
+    direction TB
+
+    user ||..o{ volunteersubmission : "student_id"
+    user o|..o{ volunteersubmission : "reviewed_by (nullable)"
+    user ||..o{ redemption : "student_id"
+    user o|..o{ redemption : "processed_by (nullable)"
+    award ||..o{ redemption : "award_id"
+
+    user["user (User)"] {
+        int id PK "Generated"
+        str username UK "Unique index"
+        EmailStr email UK "Unique index"
+        str password "Stores password hash"
+        str role "regular_user / admin"
+    }
+
+    volunteersubmission["volunteersubmission (VolunteerSubmission)"] {
+        int id PK "Generated"
+        int student_id FK "user.id"
+        str activity_name "NOT NULL"
+        str organization "NOT NULL"
+        date activity_date "NOT NULL"
+        Decimal hours "Python: gt 0"
+        str supporting_information "Empty string allowed"
+        str status "Default pending"
+        datetime submitted_at "Default UTC now"
+        int reviewed_by FK "Optional; user.id"
+        datetime reviewed_at "Optional"
+    }
+
+    milestone["milestone (Milestone)"] {
+        int id PK "Generated"
+        str name UK "NOT NULL"
+        str description "Optional"
+        Decimal required_hours "Python: gt 0"
+    }
+
+    award["award (Award)"] {
+        int id PK "Generated"
+        str name UK "NOT NULL"
+        str description "Optional"
+        Decimal required_hours "Python: gt 0"
+        int quantity_available "Default 0; Python: ge 0"
+        bool active "Default true"
+    }
+
+    redemption["redemption (Redemption)"] {
+        int id PK "Generated"
+        int student_id FK "user.id"
+        int award_id FK "award.id"
+        str status "Default pending"
+        datetime requested_at "Default UTC now"
+        int processed_by FK "Optional; user.id"
+        datetime processed_at "Optional"
+    }
